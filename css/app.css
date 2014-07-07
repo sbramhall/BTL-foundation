@@ -1,0 +1,48 @@
+/* custom CSS styles */
+
+.button {
+	background-color: #5F2D8C;
+	border-color: #462065;
+	color: white;
+}
+.button:hover, .button:focus {
+	background-color: #462065;
+}
+header h2 {
+	font-family: Georgia, serif;
+	font-style: italic;
+	font-weight: normal;
+	padding-top: .4em;
+}
+h1, h2, h3, h4, h5, h6 {
+	color: #DC143C;
+	font-family: 'Alegreya Sans', sans-serif;
+}
+
+/* chapter 3 styling challenge */
+article {
+	padding-bottom: 2em;
+}
+article .left {
+	padding: 0 1em 1em 0;
+}
+article .right {
+	padding: 0 0 1em 1em;
+}
+.topspace {
+	padding-top: 3em;
+}
+.topspace p {
+	font-size: 0.8em;
+	color: #999;
+	font-family: Georgia, serif;
+	font-style: italic;
+}
+footer {
+	padding: 2em 0;
+	color: #999;
+	border-top: 1px solid #ccc;
+}
+footer p {
+	font-size: 0.8em;
+}
