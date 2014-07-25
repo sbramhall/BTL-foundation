@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-<script id="home-tpl" type="text/x-handlebars-template">
-        <div class='header'><h1>Home</h1></div>
-        <div class='search-bar'><input class='search-key' type="text"/></div>
-        <ul class='employee-list'></ul>
-</script>
 <html>
 <head lang="en">
     <meta charset="utf-8"/>
@@ -17,12 +12,14 @@
     <script src="js/vendor/handlebars-v1.3.0.js"></script>
 </head>
 <body>
+
+<div id="foo">
+<!--empty div for page content-->
+</div>
+
 <script id="main-tpl" type="text/x-handlebars-template">
     <!--  top bar code -->
-    <!--<div class="row">
-        <div class="large-12 columns">-->
-    <div class="contain-to-grid">
-        <nav class="top-bar hide-for-small-down" data-topbar>
+    <nav class="top-bar hide-for-small-down" data-topbar>
             <ul class="title-area">
                 <li class="name"></li>
                 <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
@@ -74,7 +71,7 @@
                 </ul>
             </section>
         </nav>
-    </div>
+
 
     <div class="off-canvas-wrap" data-offcanvas>
         <div class="inner-wrap">
@@ -204,18 +201,13 @@
             </div></div>
         <!-- end inner wrap, must go after ALL content -->
     </div>
-    <!--</div></div>-->
-
-
     <!-- end offcanvas -->
 </script>
 
 <script src="js/vendor/jquery.js"></script>
 <script src="js/foundation.min.js"></script>
+<script src="js/btl-main.js"></script>
 
-<script src="js/btl-main.js"/>
-<script>
-    $(document).foundation();
-</script>
+<script>app.initialize();</script>
 </body>
 </html>

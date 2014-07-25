@@ -13,16 +13,22 @@ var app = {
 
     initialize: function() {
         var self = this;
+        try{
+            this.homeTpl = Handlebars.compile($("#main-tpl").html());
+        }
+        catch (err) {
+            console.log("handlebar compile failed")
+        }
 
-        this.homeTpl = Handlebars.compile($("#main-tpl").html());
+
         self.renderHomeView();
+        $(document).foundation();
         self.showAlert('BTL Initialized', 'Info');
 
     },
     renderHomeView: function() {
-        /* TODO find a better way to generate html */
-        $('body').html(this.homeTpl());
+
+        $('#foo').html(this.homeTpl());
     }
 };
 
-app.initialize();
