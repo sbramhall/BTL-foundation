@@ -1,7 +1,7 @@
 /**
  * Created by sbramhall on 7/20/14.
  */
-var app = {
+var btlJsApp = {
 
     showAlert: function (message, title) {
         if (navigator.notification) {
@@ -19,16 +19,38 @@ var app = {
         catch (err) {
             console.log("handlebar compile failed")
         }
-
-
         self.renderHomeView();
-        $(document).foundation();
-        self.showAlert('BTL Initialized', 'Info');
+
+//        self.showAlert('BTL Initialized', 'Info');
 
     },
-    renderHomeView: function() {
 
-        $('#foo').html(this.homeTpl());
+    renderHomeView: function() {
+        var self = this;
+        self.getTemplate(
+            'js/templates/main.handlebars',
+            function(template) {
+                $('#main-content').html(template);
+                $(document).foundation(); /*this needs to be in the callback because of ajax async behavior */
+            }
+        );
+    } ,
+
+    getTemplate: function (path, callback) {
+        var source;
+        var template;
+
+        $.ajax({
+            url: path,
+            cache: true,
+            success: function(data) {
+                source    = data;
+                template  = Handlebars.compile(source);
+
+                //execute the callback if passed
+                if (callback) callback(template);
+            }
+        });
     }
 };
 

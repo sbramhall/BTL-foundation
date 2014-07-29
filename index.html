@@ -12,14 +12,16 @@
     <script src="js/vendor/handlebars-v1.3.0.js"></script>
 </head>
 <body>
-
-<div id="foo">
+<div id="menus">
+    <!--empty div for menu tree-->
+</div>
+<div id="main-content">
 <!--empty div for page content-->
 </div>
 
 <script id="main-tpl" type="text/x-handlebars-template">
     <!--  top bar code -->
-    <nav class="top-bar hide-for-small-down" data-topbar>
+    <!--<nav class="top-bar hide-for-small-down" data-topbar>
             <ul class="title-area">
                 <li class="name"></li>
                 <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
@@ -70,12 +72,12 @@
                     <li><a href="/contactBTL.html">Contact Us</a></li>
                 </ul>
             </section>
-        </nav>
+        </nav>-->
 
 
     <div class="off-canvas-wrap" data-offcanvas>
         <div class="inner-wrap">
-            <nav class="tab-bar hide-for-medium-up">
+            <nav class="tab-bar">
                 <section class="left-small">
                     <a class="left-off-canvas-toggle menu-icon"><span></span></a>
                 </section>
@@ -198,7 +200,8 @@
                     </div>
 
                 </div>
-            </div></div>
+            </div>
+        </div>
         <!-- end inner wrap, must go after ALL content -->
     </div>
     <!-- end offcanvas -->
@@ -208,6 +211,6 @@
 <script src="js/foundation.min.js"></script>
 <script src="js/btl-main.js"></script>
 
-<script>app.initialize();</script>
+<script>btlJsApp.initialize();</script>
 </body>
 </html>
