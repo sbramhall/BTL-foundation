@@ -31,9 +31,19 @@ var btlJsApp = {
             'js/templates/main.handlebars',
             function(template) {
                 $('#main-content').html(template);
-                $(document).foundation(); /*this needs to be in the callback because of ajax async behavior */
-            }
-        );
+                self.getTemplate(
+                    'js/templates/menuTree.handlebars',
+                    function(template) {
+                        $( '#menuTree').html(template);
+                        self.getTemplate(
+                            'js/templates/weeklyShow.handlebars',
+                            function(template) {
+                                $('#btlShow').html(template);
+                                $(document).foundation();
+                                /*this needs to be in the callback because of ajax async behavior */
+                            })  ;
+                    });
+            });
     } ,
 
     getTemplate: function (path, callback) {
