@@ -27,6 +27,7 @@ var btlJsApp = {
 
     renderHomeView: function() {
         var self = this;
+        self.getData();
         self.getTemplate(
             'js/templates/main.handlebars',
             function(template) {
@@ -61,6 +62,36 @@ var btlJsApp = {
                 if (callback) callback(template);
             }
         });
+    },
+
+    getData: function () {
+        var self = this;
+        var xmlDoc;
+        $.ajax({
+            type: "GET",
+            url: "data/oneShow.xml",
+            dataType: "xml",
+            success: function(data) {
+                xmlDoc = $.parseXML(data);
+                /* $xml = xmlDoc;*/
+                var $test = $(data).find('lead-quote');
+                self.showAlert($test.text(), 'Info');
+                console.log($test.text());
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert('status='+xhr.status+'\n'+thrownError);
+            }
+        })
+
+
+    },
+    parseXML: function (xml) {
+        //find every Tutorial and print the author
+        $(xml).find("lead-quote").each(function()
+        {
+            $("#quote").append($(this).attr("quote") + "<br />");
+        }
+        )
     }
 };
 
