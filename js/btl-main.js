@@ -13,38 +13,19 @@ var btlJsApp = {
 
     initialize: function() {
         var self = this;
-        try{
+/*        try{
             this.homeTpl = Handlebars.compile($("#main-tpl").html());
         }
         catch (err) {
             console.log("handlebar compile failed")
-        }
+        }*/
         self.renderHomeView();
-
-//        self.showAlert('BTL Initialized', 'Info');
-
     },
 
     renderHomeView: function() {
         var self = this;
         self.getData();
-        self.getTemplate(
-            'js/templates/main.handlebars',
-            function(template) {
-                $('#main-content').html(template);
-                self.getTemplate(
-                    'js/templates/menuTree.handlebars',
-                    function(template) {
-                        $( '#menuTree').html(template);
-                        self.getTemplate(
-                            'js/templates/weeklyShow.handlebars',
-                            function(template) {
-                                $('#btlShow').html(template);
-                                $(document).foundation();
-                                /*this needs to be in the callback because of ajax async behavior */
-                            })  ;
-                    });
-            });
+
     } ,
 
     getTemplate: function (path, callback) {
@@ -64,23 +45,43 @@ var btlJsApp = {
         });
     },
 
+
     getData: function () {
         var self = this;
-        var xmlDoc;
+
         $.ajax({
             type: "GET",
             url: "data/oneShow.xml",
             dataType: "xml",
             success: function(data) {
-                xmlDoc = $.parseXML(data);
-                /* $xml = xmlDoc;*/
-                var $test = $(data).find('lead-quote');
-                self.showAlert($test.text(), 'Info');
-                console.log($test.text());
+                var leadQuote = $(data).find('lead-quote');
+                var quote = leadQuote.text();
+                // self.showAlert(leadQuote.text(), 'Info');
+                console.log('getData found' + quote);
+                self.getTemplate(
+                    'js/templates/main.handlebars',
+                    function(template) {
+                        $('#main-content').html(template);
+                        self.getTemplate(
+                            'js/templates/menuTree.handlebars',
+                            function(template) {
+                                $( '#menuTree').html(template);
+                                self.getTemplate(
+                                    'js/templates/weeklyShow.handlebars',
+                                    function(template) {
+                                        console.log('quote should be '+ leadQuote.text());
+                                        var context = {quote: leadQuote.text()}
+                                        $('#btlShow').html(template(context));
+                                        $(document).foundation();
+                                        /*this needs to be in the callback because of ajax async behavior */
+                                    })  ;
+                            });
+                    });
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert('status='+xhr.status+'\n'+thrownError);
             }
+
         })
 
 
