@@ -2,7 +2,7 @@
  * Created by sbramhall on 7/20/14.
  */
 var btlJsApp = {
-
+    // TODO: figure out how to make $ look defined for jquery within this class
     showAlert: function (message, title) {
         if (navigator.notification) {
             navigator.notification.alert(message, null, title, 'OK');
@@ -13,20 +13,8 @@ var btlJsApp = {
 
     initialize: function() {
         var self = this;
-/*        try{
-            this.homeTpl = Handlebars.compile($("#main-tpl").html());
-        }
-        catch (err) {
-            console.log("handlebar compile failed")
-        }*/
         self.renderHomeView();
     },
-
-    renderHomeView: function() {
-        var self = this;
-        self.getData();
-
-    } ,
 
     getTemplate: function (path, callback) {
         var source;
@@ -46,12 +34,13 @@ var btlJsApp = {
     },
 
 
-    getData: function () {
+    renderHomeView: function () {
         var self = this;
         var dataValues = {
             quote:'',
             citation:''
         };
+//         TODO: refactor to get rid of nested callbacks
         $.ajax({
             type: "GET",
             url: "data/oneShow.xml",
@@ -60,7 +49,7 @@ var btlJsApp = {
                 var leadQuote = $(data).find('lead-quote');
                 dataValues.quote = leadQuote.text();
                 dataValues.citation = $(data).find('citation').text();
-                console.log('getData values for handlebars template is '+ JSON.stringify(dataValues));
+                console.log('renderHomeView values for handlebars template is '+ JSON.stringify(dataValues));
                 self.getTemplate(
                     'js/templates/main.handlebars',
                     function(template) {
@@ -80,19 +69,13 @@ var btlJsApp = {
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 alert('status='+xhr.status+'\n'+thrownError);
+            },
+            complete: function() {
+                // (this doesn't seem to work here) $(document).foundation();
             }
-
         })
 
 
-    },
-    parseXML: function (xml) {
-        //find every Tutorial and print the author
-        $(xml).find("lead-quote").each(function()
-        {
-            $("#quote").append($(this).attr("quote") + "<br />");
-        }
-        )
     }
 };
 
