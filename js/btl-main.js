@@ -48,16 +48,19 @@ var btlJsApp = {
 
     getData: function () {
         var self = this;
-
+        var dataValues = {
+            quote:'',
+            citation:''
+        };
         $.ajax({
             type: "GET",
             url: "data/oneShow.xml",
             dataType: "xml",
             success: function(data) {
                 var leadQuote = $(data).find('lead-quote');
-                var quote = leadQuote.text();
-                // self.showAlert(leadQuote.text(), 'Info');
-                console.log('getData found' + quote);
+                dataValues.quote = leadQuote.text();
+                dataValues.citation = $(data).find('citation').text();
+                console.log('getData values for handlebars template is '+ JSON.stringify(dataValues));
                 self.getTemplate(
                     'js/templates/main.handlebars',
                     function(template) {
@@ -69,11 +72,8 @@ var btlJsApp = {
                                 self.getTemplate(
                                     'js/templates/weeklyShow.handlebars',
                                     function(template) {
-                                        console.log('quote should be '+ leadQuote.text());
-                                        var context = {quote: leadQuote.text()}
-                                        $('#btlShow').html(template(context));
+                                        $('#btlShow').html(template(dataValues));
                                         $(document).foundation();
-                                        /*this needs to be in the callback because of ajax async behavior */
                                     })  ;
                             });
                     });
