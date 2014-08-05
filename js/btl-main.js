@@ -2,6 +2,8 @@
  * Created by sbramhall on 7/20/14.
  */
 var btlJsApp = {
+
+
     // TODO: figure out how to make $ look defined for jquery within this class
     showAlert: function (message, title) {
         if (navigator.notification) {
@@ -13,69 +15,60 @@ var btlJsApp = {
 
     initialize: function() {
         var self = this;
-        self.renderHomeView();
+        // self.renderHomeView();
+        self.renderPage();
     },
-
-    getTemplate: function (path, callback) {
-        var source;
-        var template;
-
-        $.ajax({
-            url: path,
-            cache: true,
-            success: function(data) {
-                source    = data;
-                template  = Handlebars.compile(source);
-
-                //execute the callback if passed
-                if (callback) callback(template);
-            }
-        });
-    },
-
-
-    renderHomeView: function () {
+    /**
+     * call helpers to retrieve page parts and data and render the page
+     */
+    renderPage: function() {
         var self = this;
         var dataValues = {
             quote:'',
             citation:''
         };
-//         TODO: refactor to get rid of nested callbacks
-        $.ajax({
-            type: "GET",
-            url: "data/oneShow.xml",
-            dataType: "xml",
-            success: function(data) {
-                var leadQuote = $(data).find('lead-quote');
-                dataValues.quote = leadQuote.text();
-                dataValues.citation = $(data).find('citation').text();
-                console.log('renderHomeView values for handlebars template is '+ JSON.stringify(dataValues));
-                self.getTemplate(
-                    'js/templates/main.handlebars',
-                    function(template) {
-                        $('#main-content').html(template);
-                        self.getTemplate(
-                            'js/templates/menuTree.handlebars',
-                            function(template) {
-                                $( '#menuTree').html(template);
-                                self.getTemplate(
-                                    'js/templates/weeklyShow.handlebars',
-                                    function(template) {
-                                        $('#btlShow').html(template(dataValues));
-                                        $(document).foundation();
-                                    })  ;
-                            });
-                    });
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert('status='+xhr.status+'\n'+thrownError);
-            },
-            complete: function() {
-                // (this doesn't seem to work here) $(document).foundation();
+        $.when (
+            self.getData("data/oneShow.xml"),
+            self.getTemplateDeferred('js/templates/main.handlebars'),
+            self.getTemplateDeferred('js/templates/menuTree.handlebars'),
+            self.getTemplateDeferred('js/templates/weeklyShow.handlebars')
+        ).done(function(oneShowData, mainSource, menuSource, weeklyShowSource) {
+                /* first build up the dataValues object with all properties */
+                dataValues.quote = $(oneShowData).find('lead-quote').text();
+                dataValues.citation = $(oneShowData).find('citation').text();
+                //console.log('renderPage values for dataValues is '+ JSON.stringify(dataValues));
+
+                /* compile the HandleBars templates */
+                var menuTemplate    = Handlebars.compile(menuSource[0]);
+                var mainTemplate    = Handlebars.compile(mainSource[0]);
+                var weeklyTemplate  = Handlebars.compile(weeklyShowSource[0]);
+
+                /* apply templates to index.html */
+                $('#main-content').html(mainTemplate);
+                $('#menuTree').html(menuTemplate);
+                $('#btlShow').html(weeklyTemplate(dataValues));
+            $(document).foundation();
             }
+
+        )
+    },
+
+    /* helper for retrieving templates */
+    getTemplateDeferred: function (path) {
+        /* the code below returns a promise object that is accessed in the .when statement */
+        return $.ajax({
+            url: path,
+            cache: true
+            })
+    },
+
+    /* helper for getting data values */
+    getData: function (url) {
+        return $.ajax({
+            type: "GET",
+            dataType: "xml",
+            url: url
         })
-
-
     }
 };
 
