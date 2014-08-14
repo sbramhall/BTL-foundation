@@ -17,14 +17,17 @@ btlJsApp = {
     /**
      * call helpers to retrieve page parts and data and render the page
      */
-    renderPage: function () {
+    renderPage: function (showDate) {
         var self = this;
         var dataValues = {
+            credit: '',
             quote: '',
-            citation: ''
+            citation: '',
+            ledeImageUrl: '',
+            fullShowMp3: ''
         };
         $.when(
-            self.getData("data/oneShow.xml"),
+            self.getData("data/btl-"+showDate+".xml"),
             self.getTemplateDeferred('js/templates/main.handlebars'),
             self.getTemplateDeferred('js/templates/menuTree.handlebars'),
             self.getTemplateDeferred('js/templates/weeklyShow.handlebars')
@@ -32,6 +35,11 @@ btlJsApp = {
                 /* first build up the dataValues object with all properties */
                 dataValues.quote = $(oneShowData).find('lead-quote').text();
                 dataValues.citation = $(oneShowData).find('citation').text();
+                dataValues.credit = $(oneShowData).find('credit').text();
+                dataValues.ledeImageUrl = $(oneShowData).find('i\/'+showDate+'-lede.jpg');
+
+
+
                 /*console.log('renderPage values for dataValues is '+ JSON.stringify(dataValues));*/
 
                 /* compile the HandleBars templates */
