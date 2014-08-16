@@ -36,10 +36,7 @@ btlJsApp = {
                 dataValues.quote = $(oneShowData).find('lead-quote').text();
                 dataValues.citation = $(oneShowData).find('citation').text();
                 dataValues.credit = $(oneShowData).find('credit').text();
-                dataValues.ledeImageUrl = $(oneShowData).find('i\/'+showDate+'-lede.jpg');
-
-
-
+                dataValues.ledeImageUrl = 'i/'+showDate+'-lede.jpg';
                 /*console.log('renderPage values for dataValues is '+ JSON.stringify(dataValues));*/
 
                 /* compile the HandleBars templates */
