@@ -17,7 +17,7 @@ btlJsApp = {
     /**
      * call helpers to retrieve page parts and data and render the page
      */
-    renderPage_saved: function (showDate) {
+    renderPage: function (showDate) {
         var self = this;
         var dataValues = {
             credit: '',
@@ -26,12 +26,17 @@ btlJsApp = {
             ledeImageUrl: '',
             fullShowMp3: ''
         };
+        var menuValues = {
+            menuPath: 'http://btlonline.org'
+        };
+
         $.when(
             self.getData("data/btl-" + showDate + ".xml"),
             self.getResourceDeferred('js/templates/main.handlebars'),
             self.getResourceDeferred('js/templates/menuTree.handlebars'),
-            self.getResourceDeferred('js/templates/weeklyShow.handlebars')
-        ).done(function (oneShowData, mainSource, menuSource, weeklyShowSource) {
+            self.getResourceDeferred('js/templates/weeklyShow.handlebars'),
+            self.getShowData(showDate)
+        ).done(function (oneShowData, mainSource, menuSource, weeklyShowSource, showData) {
                 /* first build up the dataValues object with all properties */
                 dataValues.quote = $(oneShowData).find('lead-quote').text();
                 dataValues.citation = $(oneShowData).find('citation').text();
@@ -40,19 +45,19 @@ btlJsApp = {
                 /*console.log('renderPage values for dataValues is '+ JSON.stringify(dataValues));*/
 
                 /* compile the HandleBars templates */
-                var menuTemplate = Handlebars.compile(menuSource[0]);
                 var mainTemplate = Handlebars.compile(mainSource[0]);
+                var menuTemplate = Handlebars.compile(menuSource[0]);
                 var weeklyTemplate = Handlebars.compile(weeklyShowSource[0]);
 
                 /* apply templates to index.html */
                 $('#main-content').html(mainTemplate);
-                $('#menuTree').html(menuTemplate);
+                $('#menuTree').html(menuTemplate(menuValues));
                 $('#btlShow').html(weeklyTemplate(dataValues));
                 $(document).foundation();
             }
         )
     },
-    fullPage: function () {
+    getShowData: function () {
         var self = this;
         var serverPath = 'http://susan.btlonline.org/';
         var ledeHtml = '';
@@ -92,7 +97,6 @@ btlJsApp = {
                     })
                     .fail(function (result, errorType, errorDetail) {
                         ledeHtml = 'failed';
-                        alert("error retrieving " + this.url + "Error type: " + errorType);
                         console.error("error retrieving " + this.url + "Error type: " + errorType);
                     })
                     .always(function () {
@@ -155,7 +159,7 @@ btlJsApp = {
                         de.resolve();
                     })
             );
-            $.when(da, db, dc, dd, de).done(
+            return $.when(da, db, dc, dd, de).done(
                 function () {
                     console.log("done with ajax requests.  ready to create page");
                     console.log("ledeHtml  state=" + a.state());
@@ -170,7 +174,7 @@ btlJsApp = {
         ;
 
 
-        return;
+       // return "hello";
         /*
          Now fetch the lede elements and add to templates
          */
@@ -210,7 +214,7 @@ btlJsApp = {
     },
 
 
-    renderPage: function (showDate) {
+    renderPage_old: function (showDate) {
         var self = this;
         var dataValues = {
             credit: '',
@@ -248,12 +252,14 @@ btlJsApp = {
     /* helper for retrieving templates */
     getResourceDeferred: function (path) {
         /* the code below returns a promise object that is accessed in the .when statement */
+        console.log("getResourceDeferred fetching "+path);
         return $.ajax({
             url: path,
             cache: true
         })
     },
     getUrlDate: function (pUrl) {
+        console.log("getUrlDate fetching "+pUrl);
         $.ajax({
 
             url: pUrl,
@@ -300,6 +306,7 @@ btlJsApp = {
 
     /* helper for getting data values */
     getData: function (url) {
+        console.log("getData fetching "+url);
         return $.ajax({
             type: "GET",
             dataType: "xml",
