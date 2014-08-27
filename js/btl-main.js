@@ -19,9 +19,11 @@ btlJsApp = {
      */
     renderPage: function (serverPath, showDate) {
         $ = jQuery;
+        var btlRoot = "http://btlonline.org";
         var self = this;
         var pageShowDate = {
-            showDate: showDate
+            showDate: showDate,
+            showYear: ''
         };
         var dataValues = {
             credit: '',
@@ -31,7 +33,7 @@ btlJsApp = {
             fullShowMp3: ''
         };
         var menuValues = {
-            menuPath: 'http://btlonline.org'
+            menuPath: btlRoot
         };
         $.when(self.getUrlDate(serverPath, pageShowDate))
             .done(function () {
@@ -47,7 +49,7 @@ btlJsApp = {
                         dataValues.quote = $(oneShowData).find('lead-quote').text();
                         dataValues.citation = $(oneShowData).find('citation').text();
                         dataValues.credit = $(oneShowData).find('credit').text();
-                        dataValues.ledeImageUrl = 'i/' + pageShowDate.showDate + '-lede.jpg';
+                        dataValues.ledeImageUrl = btlRoot+"/"+pageShowDate.showYear+"/i/" + pageShowDate.showDate + "-lede.jpg";
                         /*console.log('renderPage values for dataValues is '+ JSON.stringify(dataValues));*/
 
                         /* compile the HandleBars templates */
@@ -177,42 +179,6 @@ btlJsApp = {
 
     },
 
-  /*  renderPage_old: function (showDate) {
-        var self = this;
-        var dataValues = {
-            credit: '',
-            quote: '',
-            citation: '',
-            ledeImageUrl: '',
-            fullShowMp3: ''
-        };
-        $.when(
-            self.getData("data/btl-" + showDate + ".xml"),
-            self.getResourceDeferred('js/templates/main.handlebars'),
-            self.getResourceDeferred('js/templates/menuTree.handlebars'),
-            self.getResourceDeferred('js/templates/weeklyShow.handlebars')
-        ).done(function (oneShowData, mainSource, menuSource, weeklyShowSource) {
-                *//* first build up the dataValues object with all properties *//*
-                dataValues.quote = $(oneShowData).find('lead-quote').text();
-                dataValues.citation = $(oneShowData).find('citation').text();
-                dataValues.credit = $(oneShowData).find('credit').text();
-                dataValues.ledeImageUrl = 'i/' + showDate + '-lede.jpg';
-                *//*console.log('renderPage values for dataValues is '+ JSON.stringify(dataValues));*//*
-
-                *//* compile the HandleBars templates *//*
-                var menuTemplate = Handlebars.compile(menuSource[0]);
-                var mainTemplate = Handlebars.compile(mainSource[0]);
-                var weeklyTemplate = Handlebars.compile(weeklyShowSource[0]);
-
-                *//* apply templates to index.html *//*
-                $('#main-content').html(mainTemplate);
-                $('#menuTree').html(menuTemplate);
-                $('#btlShow').html(weeklyTemplate(dataValues));
-                $(document).foundation();
-            }
-        )
-    },*/
-
     /* helper for retrieving templates */
     getResourceDeferred: function (path) {
         /* the code below returns a promise object that is accessed in the .when statement */
@@ -239,10 +205,11 @@ btlJsApp = {
                         var doc = $.parseHTML(result);
                         var content = ($(doc).filter("meta")).attr("content");
                         var url = content.split('url=')[1];
+                        showDateObj.showYear = url.split("/")[1];
                         showDateObj.showDate = url.split("/")[2].split("-")[0];
 
                         //showDate = url.split("/")[2].split("-")[0];
-                        console.log('getUrlDate returning date=' + showDateObj.showDate);
+                        console.log('getUrlDate returning date=' + JSON.stringify(showDateObj));
                     })
                     .fail(function () {
                         alert("unable to find current show.");
