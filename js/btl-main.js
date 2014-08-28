@@ -23,13 +23,12 @@ btlJsApp = {
         var self = this;
         var pageShowDate = {
             showDate: showDate,
-            showYear: ''
+            showYear: '2014'
         };
         var dataValues = {
             credit: '',
-            quote: '',
-            citation: '',
             ledeImageUrl: '',
+            ledeHtml: '',
             fullShowMp3: ''
         };
         var menuValues = {
@@ -39,18 +38,21 @@ btlJsApp = {
             .done(function () {
                 console.log("show date passed in =" + showDate + "; local pageShowDate property =" + pageShowDate.showDate);
                 $.when(
-                    self.getData("data/btl-" + pageShowDate.showDate + ".xml"),
+                    //self.getData("data/btl-" + pageShowDate.showDate + ".xml"),
                     self.getResourceDeferred('js/templates/main.handlebars'),
                     self.getResourceDeferred('js/templates/menuTree.handlebars'),
                     self.getResourceDeferred('js/templates/weeklyShow.handlebars'),
-                    self.getShowData(pageShowDate.showDate)
-                ).done(function (oneShowData, mainSource, menuSource, weeklyShowSource, showData) {
+                    self.getShowData(pageShowDate.showDate, dataValues)
+                ).done(function (
+                        //oneShowData,
+                        mainSource, menuSource, weeklyShowSource, showData) {
                         /* first build up the dataValues object with all properties */
-                        dataValues.quote = $(oneShowData).find('lead-quote').text();
-                        dataValues.citation = $(oneShowData).find('citation').text();
-                        dataValues.credit = $(oneShowData).find('credit').text();
+                        //dataValues.quote = $(oneShowData).find('lead-quote').text();
+                        //dataValues.citation = $(oneShowData).find('citation').text();
+                        //dataValues.credit = $(oneShowData).find('credit').text();
                         dataValues.ledeImageUrl = btlRoot+"/"+pageShowDate.showYear+"/i/" + pageShowDate.showDate + "-lede.jpg";
-                        /*console.log('renderPage values for dataValues is '+ JSON.stringify(dataValues));*/
+                        dataValues.fullShowMp3 = btlRoot+"/"+pageShowDate.showYear+"/mp3/"+pageShowDate.showDate + "-btlv64.mp3";
+
 
                         /* compile the HandleBars templates */
                         var mainTemplate = Handlebars.compile(mainSource[0]);
@@ -69,7 +71,7 @@ btlJsApp = {
             alert("The urlDate function failed - this should never happen.");
         })
     },
-    getShowData: function (currentShow) {
+    getShowData: function (currentShow, dataValues) {
         var self = this;
         var serverPath = 'http://susan.btlonline.org/';
         var ledeHtml = '';
@@ -87,20 +89,15 @@ btlJsApp = {
         var dd = $.Deferred();
         var de = $.Deferred();
 
-        var dataValues = {
-
-        };
-
-
         console.log('currentShow is ' + currentShow);
 
-        a = $.when(self.getResourceDeferred(serverPath + 'html/' + currentShow + 'l.html')
+        getLedeHtml = $.when(self.getResourceDeferred(serverPath + 'html/' + currentShow + 'l.html')
                 .done(function (result) {
                     ledeHtml = result;
-                    // console.log("got ledeHtml: " + ledeHtml)
+                    // console.log("got ledeHtml from result: " + ledeHtml);
                 })
                 .fail(function (result, errorType) {
-                    ledeHtml = 'failed';
+                    ledeHtml = undefined;
                     console.error("error retrieving " + this.url + "Error type: " + errorType);
                 })
                 .always(function () {
@@ -108,7 +105,7 @@ btlJsApp = {
                 })
         )
         ;
-        b = $.when(self.getResourceDeferred(serverPath + 'xml/' + currentShow + 'l.xml')
+        getLedeXml = $.when(self.getResourceDeferred(serverPath + 'xml/' + currentShow + 'l.xml')
                 .done(function (ledeXmlresult) {
                     ledeXml = ledeXmlresult;
                     //console.log("got ledeXml: "+ledeXml);
@@ -166,12 +163,14 @@ btlJsApp = {
         return $.when(da, db, dc, dd, de).done(
             function () {
                 console.log("done with ajax requests.  ready to create page");
-                console.log("ledeHtml  state=" + a.state());
-                console.log("ledeXml  state=" + b.state());
+                dataValues.ledeHtml  = ledeHtml;
+                console.log("ledeHtml  state=" + getLedeHtml.state());
+                console.log("ledeXml  state=" + getLedeXml.state() +" not used");
                 console.log("segXmlA state=" + c.state());
                 console.log("segXmlB  state=" + d.state());
                 console.log("segXmlC state=" + e.state());
                 /*can process the data now.  phew!*/
+
             }
         );
         ;
