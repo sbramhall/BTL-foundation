@@ -30,10 +30,9 @@ btlJsApp = {
             ledeImageUrl: '',
             ledeHtml: '',
             fullShowMp3: '',
-            segAHeadline: '',
-            segAguest: '',
-            segAtitle: '',
-            segAinterviewer: ''
+            segAHeadline: '', segAguest: '', segAtitle: '', segAinterviewer: '', segApara1: '',
+            segBHeadline: '', segBguest: '', segBtitle: '', segBinterviewer: '', segBpara1: '',
+            segCHeadline: '', segCguest: '', segCtitle: '', segCinterviewer: '', segCpara1: ''
         };
         var menuValues = {
             menuPath: btlRoot
@@ -47,15 +46,14 @@ btlJsApp = {
                     self.getResourceDeferred('js/templates/menuTree.handlebars'),
                     self.getResourceDeferred('js/templates/weeklyShow.handlebars'),
                     self.getShowData(pageShowDate.showDate, dataValues)
-                ).done(function (
-                        //oneShowData,
-                        mainSource, menuSource, weeklyShowSource, showData) {
+                ).done(function (//oneShowData,
+                                 mainSource, menuSource, weeklyShowSource, showData) {
                         /* first build up the dataValues object with all properties */
                         //dataValues.quote = $(oneShowData).find('lead-quote').text();
                         //dataValues.citation = $(oneShowData).find('citation').text();
                         //dataValues.credit = $(oneShowData).find('credit').text();
-                        dataValues.ledeImageUrl = btlRoot+"/"+pageShowDate.showYear+"/i/" + pageShowDate.showDate + "-lede.jpg";
-                        dataValues.fullShowMp3 = btlRoot+"/"+pageShowDate.showYear+"/mp3/"+pageShowDate.showDate + "-btlv64.mp3";
+                        dataValues.ledeImageUrl = btlRoot + "/" + pageShowDate.showYear + "/i/" + pageShowDate.showDate + "-lede.jpg";
+                        dataValues.fullShowMp3 = btlRoot + "/" + pageShowDate.showYear + "/mp3/" + pageShowDate.showDate + "-btlv64.mp3";
 
 
                         /* compile the HandleBars templates */
@@ -72,8 +70,8 @@ btlJsApp = {
                 )
             })
             .fail(function () {
-            alert("The urlDate function failed - this should never happen.");
-        })
+                alert("The urlDate function failed - this should never happen.");
+            })
     },
     getShowData: function (currentShow, dataValues) {
         var self = this;
@@ -132,7 +130,7 @@ btlJsApp = {
                         $(segAresult).find('lastname').text();
                     dataValues.segAinterviewer = $(segAresult).find('interviewer').text();
                     dataValues.segAtitle = $(segAresult).find('title').text();
-                    //console.log("got segXmlA: " + segXmlA);
+                    dataValues.segApara1 = $(segAresult).find('para').text();
                 })
                 .fail(function (segAresult, errorType) {
                     segXmlA = 'failed';
@@ -144,9 +142,16 @@ btlJsApp = {
                     dc.resolve();
                 })
         );
-        d = $.when(self.getResourceDeferred(serverPath + 'xml/' + currentShow + 'b.xml')
+        getSegB = $.when(self.getResourceDeferred(serverPath + 'xml/' + currentShow + 'b.xml')
                 .done(function (segBresult) {
                     segXmlB = segBresult;
+                    dataValues.segBHeadline = $(segBresult).find('headline').text();
+
+                    dataValues.segBguest = $(segBresult).find('firstname').text() + ' ' +
+                        $(segBresult).find('lastname').text();
+                    dataValues.segBinterviewer = $(segBresult).find('interviewer').text();
+                    dataValues.segBtitle = $(segBresult).find('title').text();
+                    dataValues.segBpara1 = $(segBresult).find('para').text();
                 })
                 .fail(function (segBresult, errorType) {
                     segBresult = 'failed';
@@ -157,9 +162,16 @@ btlJsApp = {
                     dd.resolve();
                 })
         );
-        e = $.when(self.getResourceDeferred(serverPath + 'xml/' + currentShow + 'c.xml')
+        getSegC = $.when(self.getResourceDeferred(serverPath + 'xml/' + currentShow + 'c.xml')
                 .done(function (segCresult) {
                     segXmlC = segCresult;
+                    dataValues.segCHeadline = $(segCresult).find('headline').text();
+
+                    dataValues.segCguest = $(segCresult).find('firstname').text() + ' ' +
+                        $(segCresult).find('lastname').text();
+                    dataValues.segCinterviewer = $(segCresult).find('interviewer').text();
+                    dataValues.segCtitle = $(segCresult).find('title').text();
+                    dataValues.segCpara1 = $(segCresult).find('para').text();
                 })
                 .fail(function (segCresult, errorType) {
                     segXmlC = 'failed';
@@ -173,13 +185,13 @@ btlJsApp = {
         return $.when(da, db, dc, dd, de).done(
             function () {
                 console.log("done with ajax requests.  ready to create page");
-                dataValues.ledeHtml  = ledeHtml;
+                dataValues.ledeHtml = ledeHtml;
 
                 console.log("ledeHtml  state=" + getLedeHtml.state());
-                console.log("ledeXml  state=" + getLedeXml.state() +" not used");
+                console.log("ledeXml  state=" + getLedeXml.state() + " not used");
                 console.log("segXmlA state=" + getSegA.state());
-                console.log("segXmlB  state=" + d.state());
-                console.log("segXmlC state=" + e.state());
+                console.log("segXmlB  state=" + getSegB.state());
+                console.log("segXmlC state=" + getSegC.state());
                 /*can process the data now.  phew!*/
 
             }
