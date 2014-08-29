@@ -29,7 +29,11 @@ btlJsApp = {
             credit: '',
             ledeImageUrl: '',
             ledeHtml: '',
-            fullShowMp3: ''
+            fullShowMp3: '',
+            segAHeadline: '',
+            segAguest: '',
+            segAtitle: '',
+            segAinterviewer: ''
         };
         var menuValues = {
             menuPath: btlRoot
@@ -119,9 +123,15 @@ btlJsApp = {
                 })
         );
 
-        c = $.when(self.getResourceDeferred(serverPath + 'xml/' + currentShow + 'a.xml')
+        getSegA = $.when(self.getResourceDeferred(serverPath + 'xml/' + currentShow + 'a.xml')
                 .done(function (segAresult) {
-                    segXmlA = segAresult;
+                    //segXmlA = segAresult;
+                    dataValues.segAHeadline = $(segAresult).find('headline').text();
+
+                    dataValues.segAguest = $(segAresult).find('firstname').text() + ' ' +
+                        $(segAresult).find('lastname').text();
+                    dataValues.segAinterviewer = $(segAresult).find('interviewer').text();
+                    dataValues.segAtitle = $(segAresult).find('title').text();
                     //console.log("got segXmlA: " + segXmlA);
                 })
                 .fail(function (segAresult, errorType) {
@@ -164,9 +174,10 @@ btlJsApp = {
             function () {
                 console.log("done with ajax requests.  ready to create page");
                 dataValues.ledeHtml  = ledeHtml;
+
                 console.log("ledeHtml  state=" + getLedeHtml.state());
                 console.log("ledeXml  state=" + getLedeXml.state() +" not used");
-                console.log("segXmlA state=" + c.state());
+                console.log("segXmlA state=" + getSegA.state());
                 console.log("segXmlB  state=" + d.state());
                 console.log("segXmlC state=" + e.state());
                 /*can process the data now.  phew!*/
