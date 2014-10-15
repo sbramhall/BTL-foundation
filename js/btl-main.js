@@ -7,6 +7,9 @@ btlJsApp = {
 
     // TODO: figure out how to make $ look defined for jquery within this class
     showAlert: function (message, title) {
+        /*
+        this function is not used at the moment
+         */
         if (navigator.notification) {
             navigator.notification.alert(message, null, title, 'OK');
         } else {
@@ -93,7 +96,7 @@ btlJsApp = {
 
         console.log('currentShow is ' + currentShow);
 
-        getLedeHtml = $.when(self.getResourceDeferred(serverPath + 'html/' + currentShow + 'l.html')
+        var getLedeHtml = $.when(self.getResourceDeferred(serverPath + 'html/' + currentShow + 'l.html')
                 .done(function (result) {
                     ledeHtml = result;
                     // console.log("got ledeHtml from result: " + ledeHtml);
@@ -107,7 +110,7 @@ btlJsApp = {
                 })
         )
         ;
-        getLedeXml = $.when(self.getResourceDeferred(serverPath + 'xml/' + currentShow + 'l.xml')
+        var getLedeXml = $.when(self.getResourceDeferred(serverPath + 'xml/' + currentShow + 'l.xml')
                 .done(function (ledeXmlresult) {
                     ledeXml = ledeXmlresult;
                     //console.log("got ledeXml: "+ledeXml);
@@ -196,7 +199,7 @@ btlJsApp = {
 
             }
         );
-        ;
+
 
 
     },
@@ -220,9 +223,9 @@ btlJsApp = {
          */
         var currentShow = $.Deferred();
         if (showDateObj.showDate === undefined) {
-            console.log("getUrlDate fetching " + serverPath + '/btlidx.txt');
+            console.log("getUrlDate fetching " + serverPath + '/btlidx.html');
             getIdx = $.when(
-                (self.getResourceDeferred(serverPath + '/btlidx.txt'))
+                (self.getResourceDeferred(serverPath + '/btlidx.html'))
                     .done(function (result) {
                         var doc = $.parseHTML(result);
                         var content = ($(doc).filter("meta")).attr("content");
