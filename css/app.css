@@ -49,6 +49,9 @@ h1, h2, h3, h4, h5, h6 {
 .segblock {
     min-height: 350px;
 }
+.more {
+    display: none;
+}
 /* chapter 3 styling challenge */
 article {
 	padding-bottom: 2em;

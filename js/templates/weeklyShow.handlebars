@@ -29,7 +29,32 @@
         </p>
         <img class="floatleft" height="199" src="{{segAimageSrc}}" width="300" alt="{{segAimageAltText}}" />
         <p>{{segApara1}}
-            <a class="italic" href="seg/140711af-btl-clarkson.html">&nbsp;Story continues</a></p>
+            <!--<a href="#" data-dropdown="drop2">more...</a>
+        <div id="drop2" data-dropdown-content class="f-dropdown content">
+            <p>{{segAmore}}</p>
+        </div>-->
+        <a href="#div1" class="navLink">more...</a>
+            <div id="div1" class="more">
+            <p>{{segAmore}}</p>
+        </div>
+        <script>
+            $('.navLink').on('click', function (e) {
+                e.preventDefault();
+                var targetDiv = $($(this).attr('href'));
+                if (!targetDiv.is(':visible')) {
+                    $('.more').slideUp();
+                    targetDiv.slideDown();
+                } else {
+                    $('.more').slideUp();
+                }
+            });
+        </script>-->
+       <!-- <script>
+            $("#more").click(function(){
+                $(".more").toggle();
+            });
+
+            </script>-->
     </div>
     <!-- ================================================ -->
 

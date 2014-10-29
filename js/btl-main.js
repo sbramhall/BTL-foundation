@@ -35,7 +35,7 @@ btlJsApp = {
             ledeHtml: '',
             fullShowMp3: '',
             segAHeadline: '', segAguestName: '', segAguestTitle: '', segAinterviewer: '',
-            segApara1: '', segAimageAltText: '', segAimageSrc: '',
+            segApara1: '', segAimageAltText: '', segAimageSrc: '', segAmore: '',
             segBHeadline: '', segBguest: '', segBtitle: '', segBinterviewer: '', segBpara1: '',
             segCHeadline: '', segCguest: '', segCtitle: '', segCinterviewer: '', segCpara1: ''
         };
@@ -142,7 +142,8 @@ btlJsApp = {
                         $(segAresult).find('lastname').text();
                     dataValues.segAinterviewer = $(segAresult).find('interviewer').text();
                     dataValues.segAguestTitle = $(segAresult).find('guest').children('title').text();
-                    dataValues.segApara1 = $(segAresult).find('para').first().text();
+                    dataValues.segApara1 = $(segAresult).find('script').children('para').first().text();
+                    dataValues.segAmore = $(segAresult).find('script').children('para').first().nextAll().text();
                 })
                 .fail(function (segAresult, errorType) {
                     segXmlA = 'failed';
