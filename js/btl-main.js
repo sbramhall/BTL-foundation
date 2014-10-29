@@ -1,6 +1,7 @@
 /**
  * Created by sbramhall on 7/20/14.
  */
+var btlRoot = "http://btlonline.org";
 var btlJsApp;
 btlJsApp = {
 
@@ -22,7 +23,7 @@ btlJsApp = {
      */
     renderPage: function (serverPath, showDate) {
         $ = jQuery;
-        var btlRoot = "http://btlonline.org";
+
         var self = this;
         var pageShowDate = {
             showDate: showDate,
@@ -33,7 +34,8 @@ btlJsApp = {
             ledeImageUrl: '',
             ledeHtml: '',
             fullShowMp3: '',
-            segAHeadline: '', segAguest: '', segAtitle: '', segAinterviewer: '', segApara1: '',
+            segAHeadline: '', segAguestName: '', segAguestTitle: '', segAinterviewer: '',
+            segApara1: '', segAimageAltText: '', segAimageSrc: '',
             segBHeadline: '', segBguest: '', segBtitle: '', segBinterviewer: '', segBpara1: '',
             segCHeadline: '', segCguest: '', segCtitle: '', segCinterviewer: '', segCpara1: ''
         };
@@ -48,7 +50,7 @@ btlJsApp = {
                     self.getResourceDeferred('js/templates/main.handlebars'),
                     self.getResourceDeferred('js/templates/menuTree.handlebars'),
                     self.getResourceDeferred('js/templates/weeklyShow.handlebars'),
-                    self.getShowData(pageShowDate.showDate, dataValues)
+                    self.getShowData(pageShowDate, dataValues)
                 ).done(function (//oneShowData,
                                  mainSource, menuSource, weeklyShowSource, showData) {
                         /* first build up the dataValues object with all properties */
@@ -76,7 +78,7 @@ btlJsApp = {
                 alert("The urlDate function failed - this should never happen.");
             })
     },
-    getShowData: function (currentShow, dataValues) {
+    getShowData: function (pageShowDate, dataValues) {
         var self = this;
         var serverPath = 'http://susan.btlonline.org/';
         var ledeHtml = '';
@@ -94,9 +96,9 @@ btlJsApp = {
         var dd = $.Deferred();
         var de = $.Deferred();
 
-        console.log('currentShow is ' + currentShow);
+        console.log('currentShow is ' + pageShowDate.showDate);
 
-        var getLedeHtml = $.when(self.getResourceDeferred(serverPath + 'html/' + currentShow + 'l.html')
+        var getLedeHtml = $.when(self.getResourceDeferred(serverPath + 'html/' + pageShowDate.showDate + 'l.html')
                 .done(function (result) {
                     ledeHtml = result;
                     // console.log("got ledeHtml from result: " + ledeHtml);
@@ -110,7 +112,7 @@ btlJsApp = {
                 })
         )
         ;
-        var getLedeXml = $.when(self.getResourceDeferred(serverPath + 'xml/' + currentShow + 'l.xml')
+        var getLedeXml = $.when(self.getResourceDeferred(serverPath + 'xml/' + pageShowDate.showDate + 'l.xml')
                 .done(function (ledeXmlresult) {
                     ledeXml = ledeXmlresult;
                     //console.log("got ledeXml: "+ledeXml);
@@ -124,16 +126,23 @@ btlJsApp = {
                 })
         );
 
-        getSegA = $.when(self.getResourceDeferred(serverPath + 'xml/' + currentShow + 'a.xml')
+        getSegA = $.when(self.getResourceDeferred(serverPath + 'xml/' + pageShowDate.showDate + 'a.xml')
                 .done(function (segAresult) {
-                    //segXmlA = segAresult;
+                    /*
+                    Set the data values to be used in the template substitution
+                     */
                     dataValues.segAHeadline = $(segAresult).find('headline').text();
 
-                    dataValues.segAguest = $(segAresult).find('firstname').text() + ' ' +
+                    dataValues.segAimageAltText = $(segAresult).find('image').children('alt').text();
+                    dataValues.segAimageSrc = btlRoot + "/" + pageShowDate.showYear + "/i/" +
+                        pageShowDate.showDate + "a-" + dataValues.segAimageAltText + "." +
+                        $(segAresult).find('image').children('type').text();
+
+                    dataValues.segAguestName = $(segAresult).find('firstname').text() + ' ' +
                         $(segAresult).find('lastname').text();
                     dataValues.segAinterviewer = $(segAresult).find('interviewer').text();
-                    dataValues.segAtitle = $(segAresult).find('title').text();
-                    dataValues.segApara1 = $(segAresult).find('para').text();
+                    dataValues.segAguestTitle = $(segAresult).find('guest').children('title').text();
+                    dataValues.segApara1 = $(segAresult).find('para').first().text();
                 })
                 .fail(function (segAresult, errorType) {
                     segXmlA = 'failed';
@@ -145,16 +154,15 @@ btlJsApp = {
                     dc.resolve();
                 })
         );
-        getSegB = $.when(self.getResourceDeferred(serverPath + 'xml/' + currentShow + 'b.xml')
+        getSegB = $.when(self.getResourceDeferred(serverPath + 'xml/' + pageShowDate.showDate + 'b.xml')
                 .done(function (segBresult) {
                     segXmlB = segBresult;
                     dataValues.segBHeadline = $(segBresult).find('headline').text();
-
                     dataValues.segBguest = $(segBresult).find('firstname').text() + ' ' +
                         $(segBresult).find('lastname').text();
                     dataValues.segBinterviewer = $(segBresult).find('interviewer').text();
                     dataValues.segBtitle = $(segBresult).find('title').text();
-                    dataValues.segBpara1 = $(segBresult).find('para').text();
+                    dataValues.segBpara1 = $(segBresult).find('para').first().text();
                 })
                 .fail(function (segBresult, errorType) {
                     segBresult = 'failed';
@@ -165,7 +173,7 @@ btlJsApp = {
                     dd.resolve();
                 })
         );
-        getSegC = $.when(self.getResourceDeferred(serverPath + 'xml/' + currentShow + 'c.xml')
+        getSegC = $.when(self.getResourceDeferred(serverPath + 'xml/' + pageShowDate.showDate + 'c.xml')
                 .done(function (segCresult) {
                     segXmlC = segCresult;
                     dataValues.segCHeadline = $(segCresult).find('headline').text();
@@ -221,7 +229,7 @@ btlJsApp = {
          and return that.  It will be resolved after the ajax call succeeds or fails
          3. otherwise just resolve the promise immediately
          */
-        var currentShow = $.Deferred();
+        var currentShow = $.Deferred(), getIdx;
         if (showDateObj.showDate === undefined) {
             console.log("getUrlDate fetching " + serverPath + '/btlidx.html');
             getIdx = $.when(

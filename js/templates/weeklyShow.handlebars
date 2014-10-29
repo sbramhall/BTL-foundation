@@ -11,21 +11,23 @@
         <p class="credit">
             &nbsp;<a href="{{fullShowMp3}}">
             <img height="14" src="/images/MP3.png" alt="MP3" width="24" /> &nbsp;64 kb/s</a>
+            <!-- the following url and image is always the same -->
             &nbsp;<a href="/affiliates.html#BroadcastQualityMP3">
             <img height="11" src="/images/HQ.jpg" alt="HQ" width="24" /> &nbsp;broadcast quality</a>
+            <!-- the following url and image is always the same -->
             &nbsp;<a href="http://itunes.apple.com/podcast/between-the-lines-radio-newsmagazine/id387215195">
             <img height="18" src="/images/podcast.png" alt="podcast" width="18" /> &nbsp;Podcast</a>
         </p><hr/></div>
     <!-- ================================================ -->
 
     <div class="segblock">
-        <h3><a href="seg/140711af-btl-clarkson.html">{{segAHeadline}}</a></h3>
+        <h3>{{segAHeadline}}</h3>
 
         <p class="italic">
             <a href="mp3/140711a-btl-clarkson.mp3">
-                <img height="16" src="/images/MP3.png" alt="MP3" width="24" /></a> Interview with {{segAguestName}}, {{segAtitle}}, conducted by {{segAinterviewer}}
+                <img height="16" src="/images/MP3.png" alt="MP3" width="24" /></a> Interview with {{segAguestName}}, {{segAguestTitle}}, conducted by {{segAinterviewer}}
         </p>
-        <img class="floatleft" height="199" src="i/140711a-hobbylobby.jpg" width="300" alt="hobbylobby" />
+        <img class="floatleft" height="199" src="{{segAimageSrc}}" width="300" alt="{{segAimageAltText}}" />
         <p>{{segApara1}}
             <a class="italic" href="seg/140711af-btl-clarkson.html">&nbsp;Story continues</a></p>
     </div>

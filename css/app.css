@@ -18,7 +18,37 @@ h1, h2, h3, h4, h5, h6 {
 	color: #DC143C;
 	font-family: 'Alegreya Sans', sans-serif;
 }
+/*classes*/
 
+.center {
+    text-align: center;
+}
+
+.italic {
+    font-style: italic;
+}
+.credit {
+    font-size: 80%;
+    font-style: italic;
+}
+.floatright {
+    float:right;
+    padding-left:.5em;
+}
+
+.floatleft {
+    float:left;
+    padding-right:.5em;
+}
+.bold
+{
+    font-weight: bold;
+}
+
+<!-- gst additions -->
+.segblock {
+    min-height: 350px;
+}
 /* chapter 3 styling challenge */
 article {
 	padding-bottom: 2em;
