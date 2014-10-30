@@ -25,19 +25,17 @@
 
         <p class="italic">
             <a href="mp3/140711a-btl-clarkson.mp3">
-                <img height="16" src="/images/MP3.png" alt="MP3" width="24" /></a> Interview with {{segAguestName}}, {{segAguestTitle}}, conducted by {{segAinterviewer}}
+                <img height="16" src="/images/MP3.png" alt="MP3" width="24" /></a>
+            Interview with {{segAguestName}}, {{segAguestTitle}}, conducted by {{segAinterviewer}}
         </p>
         <img class="floatleft" height="199" src="{{segAimageSrc}}" width="300" alt="{{segAimageAltText}}" />
         <p>{{segApara1}}
-
-
-            <a href="#div1" class="navLink">more...</a>
-        <div id="div1" class="more">
+            <a href="#segA" class="moreLink">show/hide more...</a>
+        <div id="segA" class="more">
             <p>{{segAmore}}</p>
         </div>
-        </p>
         <script>
-            $('.navLink').on('click', function (e) {
+            $('.moreLink').on('click', function (e) {
                 e.preventDefault();
                 var targetDiv = $($(this).attr('href'));
                 if (!targetDiv.is(':visible')) {
@@ -53,30 +51,34 @@
     <!-- ================================================ -->
 
     <div class="segblock">
-        <h3><a href="seg/140711bf-btl-brown.html">Project Investigates Pennsylvania Health Problems to Determine Links with Natural Gas Fracking</a></h3>
+        <h3>{{segBHeadline}}</h3>
 
         <p class="italic">
             <a href="mp3/140711b-btl-brown.mp3">
-                <img height="16" src="/images/MP3.png" alt="MP3" width="24" /></a> Interview with {{segBguestName}}, {{segBtitle}}, conducted by {{segBinterviewer}}
+                <img height="16" src="/images/MP3.png" alt="MP3" width="24" /></a>
+            Interview with {{segBguestName}}, {{segBguestTitle}}, conducted by {{segBinterviewer}}
         </p>
-        <img class="floatright" height="169" src="i/140711b-fracking.jpg" width="300" alt="fracking" />
-        <p>{{segBpara1}}
-
-            <a class="italic" href="seg/140711bf-btl-brown.html">&nbsp;Story continues</a></p>
+        <img class="floatright" height="169" src="{{segBimageSrc}}" width="300" alt="{{segBimageAltText}}" />
+        <p>{{segBpara1}}<a href="#segB" class="moreLink">show/hide more...</a>
+        <div id="segB" class="more">
+            <p>{{segBmore}}</p>
+        </div>
     </div>
     <!-- ================================================ -->
 
     <div class="segblock">
-        <h3><a href="seg/140711cf-btl-lopez.html">One Year After Supreme Court Dismantles Voting Right Act, 22 States Have Adopted New Voting Restrictions</a></h3>
+        <h3>{{segCHeadline}}</h3>
 
         <p class="italic">
-            <a href="mp3/140711c-btl-lopez.mp3">
-                <img height="16" src="/images/MP3.png" alt="MP3" width="24" /></a> Interview with {{segCguestName}}, {{segCtitle}}, conducted by {{segCinterviewer}}
+            <a href="mp3/140711b-btl-brown.mp3">
+                <img height="16" src="/images/MP3.png" alt="MP3" width="24" /></a>
+            Interview with {{segCguestName}}, {{segCguestTitle}}, conducted by {{segCinterviewer}}
         </p>
-        <img class="floatleft" height="229" src="i/140711c-voting.jpg" width="300" alt="voting" />
-        <p>{{segCpara1}}
-
-            <a class="italic" href="seg/140711cf-btl-lopez.html">&nbsp;Story continues</a></p>
+        <img class="floatright" height="169" src="{{segCimageSrc}}" width="300" alt="{{segCimageAltText}}" />
+        <p>{{segCpara1}}<a href="#segC" class="moreLink">show/hide more...</a>
+        <div id="segC" class="more">
+            <p>{{segCmore}}</p>
+        </div>
     </div>
 
 </div>

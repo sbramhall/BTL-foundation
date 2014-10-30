@@ -36,8 +36,10 @@ btlJsApp = {
             fullShowMp3: '',
             segAHeadline: '', segAguestName: '', segAguestTitle: '', segAinterviewer: '',
             segApara1: '', segAimageAltText: '', segAimageSrc: '', segAmore: '',
-            segBHeadline: '', segBguest: '', segBtitle: '', segBinterviewer: '', segBpara1: '',
-            segCHeadline: '', segCguest: '', segCtitle: '', segCinterviewer: '', segCpara1: ''
+            segBHeadline: '', segBguestName: '', segBguestTitle: '', segBinterviewer: '',
+            segBpara1: '', segBimageAltText: '', segBimageSrc: '', segBmore: '',
+            segCHeadline: '', segCguestName: '', segCguestTitle: '', segCinterviewer: '',
+            segCpara1: '', segCimageAltText: '', segCimageSrc: '', segCmore: ''
         };
         var menuValues = {
             menuPath: btlRoot
@@ -157,13 +159,20 @@ btlJsApp = {
         );
         getSegB = $.when(self.getResourceDeferred(serverPath + 'xml/' + pageShowDate.showDate + 'b.xml')
                 .done(function (segBresult) {
-                    segXmlB = segBresult;
                     dataValues.segBHeadline = $(segBresult).find('headline').text();
-                    dataValues.segBguest = $(segBresult).find('firstname').text() + ' ' +
+
+                    dataValues.segBimageAltText = $(segBresult).find('image').children('alt').text();
+                    dataValues.segBimageSrc = btlRoot + "/" + pageShowDate.showYear + "/i/" +
+                        pageShowDate.showDate + "b-" + dataValues.segBimageAltText + "." +
+                        $(segBresult).find('image').children('type').text();
+
+                    dataValues.segBguestName = $(segBresult).find('firstname').text() + ' ' +
                         $(segBresult).find('lastname').text();
                     dataValues.segBinterviewer = $(segBresult).find('interviewer').text();
-                    dataValues.segBtitle = $(segBresult).find('title').text();
-                    dataValues.segBpara1 = $(segBresult).find('para').first().text();
+                    dataValues.segBguestTitle = $(segBresult).find('guest').children('title').text();
+                    dataValues.segBpara1 = $(segBresult).find('script').children('para').first().text();
+                    dataValues.segBmore = $(segBresult).find('script').children('para').first().nextAll().text();
+
                 })
                 .fail(function (segBresult, errorType) {
                     segBresult = 'failed';
@@ -176,14 +185,19 @@ btlJsApp = {
         );
         getSegC = $.when(self.getResourceDeferred(serverPath + 'xml/' + pageShowDate.showDate + 'c.xml')
                 .done(function (segCresult) {
-                    segXmlC = segCresult;
                     dataValues.segCHeadline = $(segCresult).find('headline').text();
 
-                    dataValues.segCguest = $(segCresult).find('firstname').text() + ' ' +
+                    dataValues.segCimageAltText = $(segCresult).find('image').children('alt').text();
+                    dataValues.segCimageSrc = btlRoot + "/" + pageShowDate.showYear + "/i/" +
+                        pageShowDate.showDate + "c-" + dataValues.segCimageAltText + "." +
+                        $(segCresult).find('image').children('type').text();
+
+                    dataValues.segCguestName = $(segCresult).find('firstname').text() + ' ' +
                         $(segCresult).find('lastname').text();
                     dataValues.segCinterviewer = $(segCresult).find('interviewer').text();
-                    dataValues.segCtitle = $(segCresult).find('title').text();
-                    dataValues.segCpara1 = $(segCresult).find('para').text();
+                    dataValues.segCguestTitle = $(segCresult).find('guest').children('title').text();
+                    dataValues.segCpara1 = $(segCresult).find('script').children('para').first().text();
+                    dataValues.segCmore = $(segCresult).find('script').children('para').first().nextAll().text();
                 })
                 .fail(function (segCresult, errorType) {
                     segXmlC = 'failed';
