@@ -29,23 +29,10 @@
             Interview with {{segAguestName}}, {{segAguestTitle}}, conducted by {{segAinterviewer}}
         </p>
         <img class="floatleft" height="199" src="{{segAimageSrc}}" width="300" alt="{{segAimageAltText}}" />
-        <p>{{segApara1}}
-            <a href="#segA" class="moreLink">show/hide more...</a>
-        <div id="segA" class="more">
-            <p>{{{segAmore}}}</p>
+        <div class="expandable">
+            {{{segAstoryText}}}
         </div>
-        <script>
-            $('.moreLink').on('click', function (e) {
-                e.preventDefault();
-                var targetDiv = $($(this).attr('href'));
-                if (!targetDiv.is(':visible')) {
-                    $('.more').slideUp();
-                    targetDiv.slideDown();
-                } else {
-                    $('.more').slideUp();
-                }
-            });
-        </script>
+
 
     </div>
     <!-- ================================================ -->
@@ -59,10 +46,10 @@
             Interview with {{segBguestName}}, {{segBguestTitle}}, conducted by {{segBinterviewer}}
         </p>
         <img class="floatright" height="169" src="{{segBimageSrc}}" width="300" alt="{{segBimageAltText}}" />
-        <p>{{{segBpara1}}}<a href="#segB" class="moreLink">  show/hide more...</a>
-        <div id="segB" class="more">
-            <p>{{{segBmore}}}</p>
+        <div class="expandable">
+            {{{segBstoryText}}}
         </div>
+
     </div>
     <!-- ================================================ -->
 
@@ -75,10 +62,17 @@
             Interview with {{segCguestName}}, {{segCguestTitle}}, conducted by {{segCinterviewer}}
         </p>
         <img class="floatright" height="169" src="{{segCimageSrc}}" width="300" alt="{{segCimageAltText}}" />
-        <p>{{{segCpara1}}}<a href="#segC" class="moreLink">show/hide more...</a>
-        <div id="segC" class="more">
-            <p>{{{segCmore}}}</p>
+        <div class="expandable">
+            {{{segCstoryText}}}
         </div>
     </div>
 
 </div>
+<script>
+    $(document).ready(function() {
+        $('div.expandable').expander({
+            slicePoint: 300,
+            expandText: 'show more',
+            userCollapseText: ' show less'
+        });});
+</script>

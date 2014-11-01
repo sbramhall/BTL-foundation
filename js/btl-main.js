@@ -35,11 +35,11 @@ btlJsApp = {
             ledeHtml: '',
             fullShowMp3: '',
             segAHeadline: '', segAguestName: '', segAguestTitle: '', segAinterviewer: '',
-            segApara1: '', segAimageAltText: '', segAimageSrc: '', segAmore: '', segAmp3Url: '',
+            segAimageAltText: '', segAimageSrc: '', segAmp3Url: '', segAstoryText: '',
             segBHeadline: '', segBguestName: '', segBguestTitle: '', segBinterviewer: '',
-            segBpara1: '', segBimageAltText: '', segBimageSrc: '', segBmore: '', segBmp3Url: '',
+             segBimageAltText: '', segBimageSrc: '',  segBmp3Url: '', segBstoryText: '',
             segCHeadline: '', segCguestName: '', segCguestTitle: '', segCinterviewer: '',
-            segCpara1: '', segCimageAltText: '', segCimageSrc: '', segCmore: '', segCmp3Url: ''
+            segCimageAltText: '', segCimageSrc: '', segCmp3Url: '', segCstoryText: ''
         };
         var menuValues = {
             menuPath: btlRoot
@@ -56,12 +56,11 @@ btlJsApp = {
                 ).done(function (//oneShowData,
                                  mainSource, menuSource, weeklyShowSource, showData) {
                         /* first build up the dataValues object with all properties */
-                        //dataValues.quote = $(oneShowData).find('lead-quote').text();
-                        //dataValues.citation = $(oneShowData).find('citation').text();
-                        //dataValues.credit = $(oneShowData).find('credit').text();
-                        dataValues.ledeImageUrl = btlRoot + "/" + pageShowDate.showYear + "/i/" + pageShowDate.showDate + "-lede.jpg";
-                        dataValues.fullShowMp3 = btlRoot + "/" + pageShowDate.showYear + "/mp3/" + pageShowDate.showDate + "-btlv64.mp3";
 
+                        dataValues.ledeImageUrl = btlRoot + "/" + pageShowDate.showYear + "/i/" +
+                            pageShowDate.showDate + "-lede.jpg";
+                        dataValues.fullShowMp3 = btlRoot + "/" + pageShowDate.showYear + "/mp3/" +
+                            pageShowDate.showDate + "-btlv64.mp3";
 
                         /* compile the HandleBars templates */
                         var mainTemplate = Handlebars.compile(mainSource[0]);
@@ -134,8 +133,6 @@ btlJsApp = {
                     /*
                     Set the data values to be used in the template substitution
                      */
-
-
                     dataValues.segAHeadline = $(segAresult).find('headline').text();
 
                     dataValues.segAimageAltText = $(segAresult).find('image').children('alt').text();
@@ -151,8 +148,11 @@ btlJsApp = {
 
                     dataValues.segAinterviewer = $(segAresult).find('interviewer').text();
                     dataValues.segAguestTitle = $(segAresult).find('guest').children('title').text();
-                    dataValues.segApara1 = $(segAresult).find('script').children('para').first().text();
-                    dataValues.segAmore = $(segAresult).find('script').children('para').first().nextAll().text();
+
+                    var paraNodes = $(segAresult).find('script').children('para');
+                    $.each(paraNodes, function(index, node){
+                       dataValues.segAstoryText = dataValues.segAstoryText + '<p>' + $(node).text() + '<p>';
+                    });
                 })
                 .fail(function (segAresult, errorType) {
                     segXmlA = 'failed';
@@ -181,8 +181,10 @@ btlJsApp = {
 
                     dataValues.segBinterviewer = $(segBresult).find('interviewer').text();
                     dataValues.segBguestTitle = $(segBresult).find('guest').children('title').text();
-                    dataValues.segBpara1 = $(segBresult).find('script').children('para').first().text();
-                    dataValues.segBmore = $(segBresult).find('script').children('para').first().nextAll().text();
+                    var paraNodes = $(segBresult).find('script').children('para');
+                    $.each(paraNodes, function(index, node){
+                        dataValues.segBstoryText = dataValues.segBstoryText + '<p>' + $(node).text() + '<p>';
+                    });
 
                 })
                 .fail(function (segBresult, errorType) {
@@ -211,8 +213,10 @@ btlJsApp = {
 
                     dataValues.segCinterviewer = $(segCresult).find('interviewer').text();
                     dataValues.segCguestTitle = $(segCresult).find('guest').children('title').text();
-                    dataValues.segCpara1 = $(segCresult).find('script').children('para').first().text();
-                    dataValues.segCmore = $(segCresult).find('script').children('para').first().nextAll().text();
+                    var paraNodes = $(segCresult).find('script').children('para');
+                    $.each(paraNodes, function(index, node){
+                        dataValues.segCstoryText = dataValues.segCstoryText + '<p>' + $(node).text() + '<p>';
+                    });
                 })
                 .fail(function (segCresult, errorType) {
                     segXmlC = 'failed';
