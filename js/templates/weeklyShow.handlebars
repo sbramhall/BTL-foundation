@@ -24,7 +24,7 @@
         <h3>{{segAHeadline}}</h3>
 
         <p class="italic">
-            <a href="mp3/140711a-btl-clarkson.mp3">
+            <a href="{{segAmp3Url}}">
                 <img height="16" src="/images/MP3.png" alt="MP3" width="24" /></a>
             Interview with {{segAguestName}}, {{segAguestTitle}}, conducted by {{segAinterviewer}}
         </p>
@@ -32,7 +32,7 @@
         <p>{{segApara1}}
             <a href="#segA" class="moreLink">show/hide more...</a>
         <div id="segA" class="more">
-            <p>{{segAmore}}</p>
+            <p>{{{segAmore}}}</p>
         </div>
         <script>
             $('.moreLink').on('click', function (e) {
@@ -54,14 +54,14 @@
         <h3>{{segBHeadline}}</h3>
 
         <p class="italic">
-            <a href="mp3/140711b-btl-brown.mp3">
+            <a href="{{segBmp3Url}}">
                 <img height="16" src="/images/MP3.png" alt="MP3" width="24" /></a>
             Interview with {{segBguestName}}, {{segBguestTitle}}, conducted by {{segBinterviewer}}
         </p>
         <img class="floatright" height="169" src="{{segBimageSrc}}" width="300" alt="{{segBimageAltText}}" />
-        <p>{{segBpara1}}<a href="#segB" class="moreLink">show/hide more...</a>
+        <p>{{{segBpara1}}}<a href="#segB" class="moreLink">  show/hide more...</a>
         <div id="segB" class="more">
-            <p>{{segBmore}}</p>
+            <p>{{{segBmore}}}</p>
         </div>
     </div>
     <!-- ================================================ -->
@@ -70,14 +70,14 @@
         <h3>{{segCHeadline}}</h3>
 
         <p class="italic">
-            <a href="mp3/140711b-btl-brown.mp3">
+            <a href="{{segCmp3Url}}">
                 <img height="16" src="/images/MP3.png" alt="MP3" width="24" /></a>
             Interview with {{segCguestName}}, {{segCguestTitle}}, conducted by {{segCinterviewer}}
         </p>
         <img class="floatright" height="169" src="{{segCimageSrc}}" width="300" alt="{{segCimageAltText}}" />
-        <p>{{segCpara1}}<a href="#segC" class="moreLink">show/hide more...</a>
+        <p>{{{segCpara1}}}<a href="#segC" class="moreLink">show/hide more...</a>
         <div id="segC" class="more">
-            <p>{{segCmore}}</p>
+            <p>{{{segCmore}}}</p>
         </div>
     </div>
 

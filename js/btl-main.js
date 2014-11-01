@@ -35,11 +35,11 @@ btlJsApp = {
             ledeHtml: '',
             fullShowMp3: '',
             segAHeadline: '', segAguestName: '', segAguestTitle: '', segAinterviewer: '',
-            segApara1: '', segAimageAltText: '', segAimageSrc: '', segAmore: '',
+            segApara1: '', segAimageAltText: '', segAimageSrc: '', segAmore: '', segAmp3Url: '',
             segBHeadline: '', segBguestName: '', segBguestTitle: '', segBinterviewer: '',
-            segBpara1: '', segBimageAltText: '', segBimageSrc: '', segBmore: '',
+            segBpara1: '', segBimageAltText: '', segBimageSrc: '', segBmore: '', segBmp3Url: '',
             segCHeadline: '', segCguestName: '', segCguestTitle: '', segCinterviewer: '',
-            segCpara1: '', segCimageAltText: '', segCimageSrc: '', segCmore: ''
+            segCpara1: '', segCimageAltText: '', segCimageSrc: '', segCmore: '', segCmp3Url: ''
         };
         var menuValues = {
             menuPath: btlRoot
@@ -99,6 +99,7 @@ btlJsApp = {
         var de = $.Deferred();
 
         console.log('currentShow is ' + pageShowDate.showDate);
+        var urlPrefix = dataValues.segAimageSrc = btlRoot + "/" + pageShowDate.showYear ;
 
         var getLedeHtml = $.when(self.getResourceDeferred(serverPath + 'html/' + pageShowDate.showDate + 'l.html')
                 .done(function (result) {
@@ -133,15 +134,21 @@ btlJsApp = {
                     /*
                     Set the data values to be used in the template substitution
                      */
+
+
                     dataValues.segAHeadline = $(segAresult).find('headline').text();
 
                     dataValues.segAimageAltText = $(segAresult).find('image').children('alt').text();
-                    dataValues.segAimageSrc = btlRoot + "/" + pageShowDate.showYear + "/i/" +
+                    dataValues.segAimageSrc = urlPrefix + "/i/" +
                         pageShowDate.showDate + "a-" + dataValues.segAimageAltText + "." +
                         $(segAresult).find('image').children('type').text();
 
                     dataValues.segAguestName = $(segAresult).find('firstname').text() + ' ' +
                         $(segAresult).find('lastname').text();
+
+                    dataValues.segAmp3Url = urlPrefix + '/mp3/' + pageShowDate.showDate + 'a-btl-' +
+                        $(segAresult).find('lastname').text().toLowerCase() + '.mp3';
+
                     dataValues.segAinterviewer = $(segAresult).find('interviewer').text();
                     dataValues.segAguestTitle = $(segAresult).find('guest').children('title').text();
                     dataValues.segApara1 = $(segAresult).find('script').children('para').first().text();
@@ -168,6 +175,10 @@ btlJsApp = {
 
                     dataValues.segBguestName = $(segBresult).find('firstname').text() + ' ' +
                         $(segBresult).find('lastname').text();
+
+                    dataValues.segBmp3Url = urlPrefix + '/mp3/' + pageShowDate.showDate + 'b-btl-' +
+                        $(segBresult).find('lastname').text().toLowerCase() + '.mp3';
+
                     dataValues.segBinterviewer = $(segBresult).find('interviewer').text();
                     dataValues.segBguestTitle = $(segBresult).find('guest').children('title').text();
                     dataValues.segBpara1 = $(segBresult).find('script').children('para').first().text();
@@ -194,6 +205,10 @@ btlJsApp = {
 
                     dataValues.segCguestName = $(segCresult).find('firstname').text() + ' ' +
                         $(segCresult).find('lastname').text();
+
+                    dataValues.segCmp3Url = urlPrefix + '/mp3/' + pageShowDate.showDate + 'c-btl-' +
+                        $(segCresult).find('lastname').text().toLowerCase() + '.mp3';
+
                     dataValues.segCinterviewer = $(segCresult).find('interviewer').text();
                     dataValues.segCguestTitle = $(segCresult).find('guest').children('title').text();
                     dataValues.segCpara1 = $(segCresult).find('script').children('para').first().text();
