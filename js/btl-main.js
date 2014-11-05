@@ -44,7 +44,7 @@ btlJsApp = {
         var menuValues = {
             menuPath: btlRoot
         };
-        $.when(self.getUrlDate(serverPath, pageShowDate))
+        $.when(self.getUrlDate(btlRoot, pageShowDate))
             .done(function () {
                 console.log("show date passed in =" + showDate + "; local pageShowDate property =" + pageShowDate.showDate);
                 $.when(
@@ -265,9 +265,9 @@ btlJsApp = {
          */
         var currentShow = $.Deferred(), getIdx;
         if (showDateObj.showDate === undefined) {
-            console.log("getUrlDate fetching " + serverPath + '/btlidx.html');
+            console.log("getUrlDate fetching " + serverPath + '/index.html');
             getIdx = $.when(
-                (self.getResourceDeferred(serverPath + '/btlidx.html'))
+                (self.getResourceDeferred(serverPath + '/index.html'))
                     .done(function (result) {
                         var doc = $.parseHTML(result);
                         var content = ($(doc).filter("meta")).attr("content");
