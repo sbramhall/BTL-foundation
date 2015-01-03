@@ -2,6 +2,10 @@
  * Created by sbramhall on 7/20/14.
  */
 var btlRoot = "http://btlonline.org";
+var btlShowDate = {
+    showDate: '',
+    showYear: ''
+};
 var btlJsApp;
 btlJsApp = {
 
@@ -16,6 +20,17 @@ btlJsApp = {
         } else {
             alert(title ? (title + ": " + message) : message);
         }
+    },
+    getShowDate: function (){
+        // currently not used
+        $ = jQuery;
+        $.when(self.getUrlDate(btlRoot, btlShowDate))
+            .done(function () {
+                console.log("pageShowDate property =" + btlShowDate.showDate);
+            })
+            .fail(function () {
+                alert("The urlDate function failed - this should never happen.");
+            })
     },
 
     /**

@@ -3,7 +3,7 @@
 <!-- $Id: index.php,v 1.1 2014/12/07 18:20:30 btlswp10 Exp btlswp10 $ -->
 <html>
 <head>
-    <title>redirect to appropriate page</title>
+    <title>BTL Adaptive Redirect</title>
     <?php
     /**
      * Created by PhpStorm.
@@ -16,21 +16,18 @@
 require_once 'php/Mobile_Detect.php';
 $detect = new Mobile_Detect;
 
-    $showdate = "150102";
+    //redirect to appropriate page
 
-    $showpath = "20" . substr($showdate, 0, 2) . "/$showdate-btl.html";
     if (($pi = pathinfo(__FILE__, PATHINFO_FILENAME)) && $pi != "index")
-        print "<meta http-equiv=\"refresh\" content=\"0; url=http://btlonline.org/$showpath\">\n";
+        print "<meta http-equiv=\"refresh\" content=\"0; url=http://btlonline.org/\">\n";
     else {    # Here's where device detection is done.
         # If on a non-mobile device, do the same as above
         // Basic detection.
-        $detect->isMobile();
-        $detect->isTablet();
         if ($detect->isMobile() && !$detect->isTablet()) {
-            print "<meta http-equiv=\"refresh\" content=\"0; url=index.html\">\n";
+            print "<meta http-equiv=\"refresh\" content=\"0; url=index-m.html\">\n";
         }
         else
-            print "<meta http-equiv=\"refresh\" content=\"0; url=http://btlonline.org/$showpath\">\n";
+            print "<meta http-equiv=\"refresh\" content=\"0; url=http://btlonline.org/\">\n";
         // print "index device detection must be done on this page\n";
 
     }
