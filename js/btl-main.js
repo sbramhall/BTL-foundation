@@ -72,8 +72,7 @@ btlJsApp = {
                                  mainSource, menuSource, weeklyShowSource, showData) {
                         /* first build up the dataValues object with all properties */
 
-                        dataValues.ledeImageUrl = btlRoot + "/" + pageShowDate.showYear + "/i/" +
-                            pageShowDate.showDate + "-lede.jpg";
+
                         dataValues.fullShowMp3 = btlRoot + "/" + pageShowDate.showYear + "/mp3/" +
                             pageShowDate.showDate + "-btlv64.mp3";
 
@@ -132,6 +131,9 @@ btlJsApp = {
         var getLedeXml = $.when(self.getResourceDeferred(serverPath + 'xml/' + pageShowDate.showDate + 'l.xml')
                 .done(function (ledeXmlresult) {
                     ledeXml = ledeXmlresult;
+                    dataValues.ledeImageUrl = btlRoot + "/" + pageShowDate.showYear + "/i/" +
+                        pageShowDate.showDate + "-lede." +
+                        $(ledeXmlresult).find('image').children('type').text();
                     //console.log("got ledeXml: "+ledeXml);
                 })
                 .fail(function (ledeXml, errorType) {

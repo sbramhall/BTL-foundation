@@ -36,3 +36,4 @@ $detect = new Mobile_Detect;
 <body>
 </body>
 </html>
+88
