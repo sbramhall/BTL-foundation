@@ -2,10 +2,7 @@
  * Created by sbramhall on 7/20/14.
  */
 var btlRoot = "http://btlonline.org";
-var btlShowDate = {
-    showDate: '',
-    showYear: ''
-};
+
 var btlJsApp;
 btlJsApp = {
 
@@ -13,7 +10,7 @@ btlJsApp = {
     // TODO: figure out how to make $ look defined for jquery within this class
     showAlert: function (message, title) {
         /*
-        this function is not used at the moment
+         this function is not used at the moment
          */
         if (navigator.notification) {
             navigator.notification.alert(message, null, title, 'OK');
@@ -21,28 +18,17 @@ btlJsApp = {
             alert(title ? (title + ": " + message) : message);
         }
     },
-    getShowDate: function (){
-        // currently not used
-        $ = jQuery;
-        $.when(self.getUrlDate(btlRoot, btlShowDate))
-            .done(function () {
-                console.log("pageShowDate property =" + btlShowDate.showDate);
-            })
-            .fail(function () {
-                alert("The urlDate function failed - this should never happen.");
-            })
-    },
 
     /**
      * call helpers to retrieve page parts and data and render the page
      */
-    renderPage: function (serverPath, showDate) {
+    renderPage: function (passedShowDate) {
         $ = jQuery;
 
         var self = this;
         var pageShowDate = {
-            showDate: showDate,
-            showYear: '2014'
+            showDate: '',
+            showYear: ''
         };
         var dataValues = {
             credit: '',
@@ -52,46 +38,45 @@ btlJsApp = {
             segAHeadline: '', segAguestName: '', segAguestTitle: '', segAinterviewer: '',
             segAimageAltText: '', segAimageSrc: '', segAmp3Url: '', segAstoryText: '',
             segBHeadline: '', segBguestName: '', segBguestTitle: '', segBinterviewer: '',
-             segBimageAltText: '', segBimageSrc: '',  segBmp3Url: '', segBstoryText: '',
+            segBimageAltText: '', segBimageSrc: '', segBmp3Url: '', segBstoryText: '',
             segCHeadline: '', segCguestName: '', segCguestTitle: '', segCinterviewer: '',
             segCimageAltText: '', segCimageSrc: '', segCmp3Url: '', segCstoryText: ''
         };
         var menuValues = {
             menuPath: btlRoot
         };
-        $.when(self.getUrlDate(btlRoot, pageShowDate))
-            .done(function () {
-                console.log("show date passed in =" + showDate + "; local pageShowDate property =" + pageShowDate.showDate);
-                $.when(
-                    //self.getData("data/btl-" + pageShowDate.showDate + ".xml"),
-                    self.getResourceDeferred('js/templates/main.handlebars'),
-                    self.getResourceDeferred('js/templates/menuTree.handlebars'),
-                    self.getResourceDeferred('js/templates/weeklyShow.handlebars'),
-                    self.getShowData(pageShowDate, dataValues)
-                ).done(function (//oneShowData,
-                                 mainSource, menuSource, weeklyShowSource, showData) {
-                        /* first build up the dataValues object with all properties */
+        if (passedShowDate === undefined)
+            console.log("Oops - no showdate");
+        else {
+            pageShowDate.showYear = '20' + passedShowDate.substr(0, 2);
+            pageShowDate.showDate = passedShowDate;
+        }
+        console.log("showdate =" + passedShowDate );
 
+        $.when(
+            self.getResourceDeferred('js/templates/main.handlebars'),
+            self.getResourceDeferred('js/templates/menuTree.handlebars'),
+            self.getResourceDeferred('js/templates/weeklyShow.handlebars'),
+            self.getShowData(pageShowDate, dataValues)
+            )
+            .done(function (mainSource, menuSource, weeklyShowSource) {
+                /* first build up the dataValues object with all properties */
 
-                        dataValues.fullShowMp3 = btlRoot + "/" + pageShowDate.showYear + "/mp3/" +
-                            pageShowDate.showDate + "-btlv64.mp3";
+                dataValues.fullShowMp3 = btlRoot + "/" + pageShowDate.showYear + "/mp3/" +
+                pageShowDate.showDate + "-btlv64.mp3";
 
-                        /* compile the HandleBars templates */
-                        var mainTemplate = Handlebars.compile(mainSource[0]);
-                        var menuTemplate = Handlebars.compile(menuSource[0]);
-                        var weeklyTemplate = Handlebars.compile(weeklyShowSource[0]);
+                /* compile the HandleBars templates */
+                var mainTemplate = Handlebars.compile(mainSource[0]);
+                var menuTemplate = Handlebars.compile(menuSource[0]);
+                var weeklyTemplate = Handlebars.compile(weeklyShowSource[0]);
 
-                        /* apply templates to index.html */
-                        $('#main-content').html(mainTemplate);
-                        $('#menuTree').html(menuTemplate(menuValues));
-                        $('#btlShow').html(weeklyTemplate(dataValues));
-                        $(document).foundation();
-                    }
-                )
-            })
-            .fail(function () {
-                alert("The urlDate function failed - this should never happen.");
-            })
+                /* apply templates to index.html */
+                $('#main-content').html(mainTemplate);
+                $('#menuTree').html(menuTemplate(menuValues));
+                $('#btlShow').html(weeklyTemplate(dataValues));
+                $(document).foundation();
+            }
+        )
     },
     getShowData: function (pageShowDate, dataValues) {
         var self = this;
@@ -112,28 +97,28 @@ btlJsApp = {
         var de = $.Deferred();
 
         console.log('currentShow is ' + pageShowDate.showDate);
-        var urlPrefix = dataValues.segAimageSrc = btlRoot + "/" + pageShowDate.showYear ;
+        var urlPrefix = dataValues.segAimageSrc = btlRoot + "/" + pageShowDate.showYear;
 
         var getLedeHtml = $.when(self.getResourceDeferred(serverPath + 'html/' + pageShowDate.showDate + 'l.html')
-                .done(function (result) {
-                    ledeHtml = result;
-                    // console.log("got ledeHtml from result: " + ledeHtml);
-                })
-                .fail(function (result, errorType) {
-                    ledeHtml = undefined;
-                    console.error("error retrieving " + this.url + "Error type: " + errorType);
-                })
-                .always(function () {
-                    da.resolve();
-                })
-        )
-        ;
+                    .done(function (result) {
+                        ledeHtml = result;
+                        // console.log("got ledeHtml from result: " + ledeHtml);
+                    })
+                    .fail(function (result, errorType) {
+                        ledeHtml = undefined;
+                        console.error("error retrieving " + this.url + "Error type: " + errorType);
+                    })
+                    .always(function () {
+                        da.resolve();
+                    })
+            )
+            ;
         var getLedeXml = $.when(self.getResourceDeferred(serverPath + 'xml/' + pageShowDate.showDate + 'l.xml')
                 .done(function (ledeXmlresult) {
                     ledeXml = ledeXmlresult;
                     dataValues.ledeImageUrl = btlRoot + "/" + pageShowDate.showYear + "/i/" +
-                        pageShowDate.showDate + "-lede." +
-                        $(ledeXmlresult).find('image').children('type').text();
+                    pageShowDate.showDate + "-lede." +
+                    $(ledeXmlresult).find('image').children('type').text();
                     //console.log("got ledeXml: "+ledeXml);
                 })
                 .fail(function (ledeXml, errorType) {
@@ -148,27 +133,27 @@ btlJsApp = {
         getSegA = $.when(self.getResourceDeferred(serverPath + 'xml/' + pageShowDate.showDate + 'a.xml')
                 .done(function (segAresult) {
                     /*
-                    Set the data values to be used in the template substitution
+                     Set the data values to be used in the template substitution
                      */
                     dataValues.segAHeadline = $(segAresult).find('headline').text();
 
                     dataValues.segAimageAltText = $(segAresult).find('image').children('alt').text();
                     dataValues.segAimageSrc = urlPrefix + "/i/" +
-                        pageShowDate.showDate + "a-" + dataValues.segAimageAltText + "." +
-                        $(segAresult).find('image').children('type').text();
+                    pageShowDate.showDate + "a-" + dataValues.segAimageAltText + "." +
+                    $(segAresult).find('image').children('type').text();
 
                     dataValues.segAguestName = $(segAresult).find('firstname').text() + ' ' +
-                        $(segAresult).find('lastname').text();
+                    $(segAresult).find('lastname').text();
 
                     dataValues.segAmp3Url = urlPrefix + '/mp3/' + pageShowDate.showDate + 'a-btl-' +
-                        $(segAresult).find('lastname').text().toLowerCase() + '.mp3';
+                    $(segAresult).find('lastname').text().toLowerCase() + '.mp3';
 
                     dataValues.segAinterviewer = $(segAresult).find('interviewer').text();
                     dataValues.segAguestTitle = $(segAresult).find('guest').children('title').text();
 
                     var paraNodes = $(segAresult).find('script').children('para');
-                    $.each(paraNodes, function(index, node){
-                       dataValues.segAstoryText = dataValues.segAstoryText + '<p>' + $(node).text() + '<p>';
+                    $.each(paraNodes, function (index, node) {
+                        dataValues.segAstoryText = dataValues.segAstoryText + '<p>' + $(node).text() + '<p>';
                     });
                 })
                 .fail(function (segAresult, errorType) {
@@ -187,19 +172,19 @@ btlJsApp = {
 
                     dataValues.segBimageAltText = $(segBresult).find('image').children('alt').text();
                     dataValues.segBimageSrc = btlRoot + "/" + pageShowDate.showYear + "/i/" +
-                        pageShowDate.showDate + "b-" + dataValues.segBimageAltText + "." +
-                        $(segBresult).find('image').children('type').text();
+                    pageShowDate.showDate + "b-" + dataValues.segBimageAltText + "." +
+                    $(segBresult).find('image').children('type').text();
 
                     dataValues.segBguestName = $(segBresult).find('firstname').text() + ' ' +
-                        $(segBresult).find('lastname').text();
+                    $(segBresult).find('lastname').text();
 
                     dataValues.segBmp3Url = urlPrefix + '/mp3/' + pageShowDate.showDate + 'b-btl-' +
-                        $(segBresult).find('lastname').text().toLowerCase() + '.mp3';
+                    $(segBresult).find('lastname').text().toLowerCase() + '.mp3';
 
                     dataValues.segBinterviewer = $(segBresult).find('interviewer').text();
                     dataValues.segBguestTitle = $(segBresult).find('guest').children('title').text();
                     var paraNodes = $(segBresult).find('script').children('para');
-                    $.each(paraNodes, function(index, node){
+                    $.each(paraNodes, function (index, node) {
                         dataValues.segBstoryText = dataValues.segBstoryText + '<p>' + $(node).text() + '<p>';
                     });
 
@@ -219,19 +204,19 @@ btlJsApp = {
 
                     dataValues.segCimageAltText = $(segCresult).find('image').children('alt').text();
                     dataValues.segCimageSrc = btlRoot + "/" + pageShowDate.showYear + "/i/" +
-                        pageShowDate.showDate + "c-" + dataValues.segCimageAltText + "." +
-                        $(segCresult).find('image').children('type').text();
+                    pageShowDate.showDate + "c-" + dataValues.segCimageAltText + "." +
+                    $(segCresult).find('image').children('type').text();
 
                     dataValues.segCguestName = $(segCresult).find('firstname').text() + ' ' +
-                        $(segCresult).find('lastname').text();
+                    $(segCresult).find('lastname').text();
 
                     dataValues.segCmp3Url = urlPrefix + '/mp3/' + pageShowDate.showDate + 'c-btl-' +
-                        $(segCresult).find('lastname').text().toLowerCase() + '.mp3';
+                    $(segCresult).find('lastname').text().toLowerCase() + '.mp3';
 
                     dataValues.segCinterviewer = $(segCresult).find('interviewer').text();
                     dataValues.segCguestTitle = $(segCresult).find('guest').children('title').text();
                     var paraNodes = $(segCresult).find('script').children('para');
-                    $.each(paraNodes, function(index, node){
+                    $.each(paraNodes, function (index, node) {
                         dataValues.segCstoryText = dataValues.segCstoryText + '<p>' + $(node).text() + '<p>';
                     });
                 })
@@ -260,7 +245,6 @@ btlJsApp = {
         );
 
 
-
     },
 
     /* helper for retrieving templates */
@@ -271,52 +255,7 @@ btlJsApp = {
             url: path,
             cache: true
         })
-    },
-    getUrlDate: function (serverPath, showDateObj) {
-        var self = this;
-        /*
-         1. declare a local deferred object that will be returned as a promise
-         2. if no date is passed in then create a promise based on retrieving the idx file
-         and return that.  It will be resolved after the ajax call succeeds or fails
-         3. otherwise just resolve the promise immediately
-         */
-        var currentShow = $.Deferred(), getIdx;
-        if (showDateObj.showDate === undefined) {
-            console.log("getUrlDate fetching " + serverPath + '/index.html');
-            getIdx = $.when(
-                (self.getResourceDeferred(serverPath + '/index.html'))
-                    .done(function (result) {
-                        var doc = $.parseHTML(result);
-                        var content = ($(doc).filter("meta")).attr("content");
-                        var url = content.split('url=')[1];
-                        showDateObj.showYear = url.split("/")[1];
-                        showDateObj.showDate = url.split("/")[2].split("-")[0];
-
-                        //showDate = url.split("/")[2].split("-")[0];
-                        console.log('getUrlDate returning date=' + JSON.stringify(showDateObj));
-                    })
-                    .fail(function () {
-                        alert("unable to find current show.");
-                        console.log("getUrlDate: error getting idx file from server " + serverPath);
-                    })
-                    .always(function () {
-                        currentShow.resolve();
-                    }
-                )
-            );
-        }
-        else currentShow.resolve();
-        return $.when(currentShow);
-    },
-
-    /* helper for getting data values */
-    getData: function (url) {
-        console.log("getData fetching " + url);
-        return $.ajax({
-            type: "GET",
-            dataType: "xml",
-            url: url
-        })
     }
+
 };
 
