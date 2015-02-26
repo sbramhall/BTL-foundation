@@ -1,9 +1,11 @@
 <!-- $Id: js-setup.php,v 1.1 2015/01/22 18:35:34 btlswp10 Exp btlswp10 $ -->
 <?
+$pageTitle = "Between The Lines - Week ending " .
+	substr($showdate, 2, 2) . "/" . substr($showdate, 4, 2) . "/" . substr($showdate, 0, 2);
 print<<<END1
 	<meta charset="utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<title>Mobile friendly BTL | Welcome</title>
+	<title>$pageTitle</title>
 	<link href='http://fonts.googleapis.com/css?family=Alegreya+Sans'
 	 rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="css/foundation.css"/>
