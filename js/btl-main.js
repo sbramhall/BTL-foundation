@@ -43,7 +43,9 @@ btlJsApp = {
             segCimageAltText: '', segCimageSrc: '', segCmp3Url: '', segCstoryText: ''
         };
         var menuValues = {
-            menuPath: btlRoot
+            menuPath: btlRoot,
+            menuDate: pageShowDate.showDate,
+            menuYear: pageShowDate.showYear
         };
         if (passedShowDate === undefined)
             console.log("Oops - no showdate");
@@ -65,13 +67,16 @@ btlJsApp = {
                 dataValues.fullShowMp3 = btlRoot + "/" + pageShowDate.showYear + "/mp3/" +
                 pageShowDate.showDate + "-btlv64.mp3";
 
+                menuValues.menuDate = pageShowDate.showDate;
+                menuValues.menuYear = pageShowDate.showYear;
+
                 /* compile the HandleBars templates */
                 var mainTemplate = Handlebars.compile(mainSource[0]);
                 var menuTemplate = Handlebars.compile(menuSource[0]);
                 var weeklyTemplate = Handlebars.compile(weeklyShowSource[0]);
 
                 /* apply templates to index.html */
-                $('#main-content').html(mainTemplate);
+                $('#main-content').html(mainTemplate(menuValues));
                 $('#menuTree').html(menuTemplate(menuValues));
                 $('#btlShow').html(weeklyTemplate(dataValues));
                 $(document).foundation();
