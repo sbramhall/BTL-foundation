@@ -8,6 +8,7 @@
 .button:hover, .button:focus {
 	background-color: #462065;
 }
+
 header h2 {
 	/*font-family: Georgia, serif;*/
 	font-style: italic;
@@ -15,6 +16,7 @@ header h2 {
 	font-weight: bold;
 	padding-top: .4em;
 }
+h1 { font-size: 2rem}
 h1, h2, h3, h4, h5, h6 {
 	color: #C00;
 	font-weight: bold;
@@ -23,10 +25,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 h3 a {
 	color: #CC0000;
+	text-decoration: underline;
 
 }
 h3 a:hover {
-	text-decoration: underline;
+	color: #CC0000;
 }
 /*classes*/
 
@@ -41,15 +44,19 @@ h3 a:hover {
     font-size: 80%;
     font-style: italic;
 }
-.floatright {
-    float:right;
-    padding-left:.5em;
+/*.floatright {
+    float:none;
+    *//*padding-left:.5em;*//*
 }
 
 .floatleft {
-    float:left;
-    padding-right:.5em;
-}
+    float:none;
+    *//*padding-right:.5em;*//*
+}*/
+img.floatleft img.floatright {
+	display: block;
+	margin-left: auto;
+	margin-right: auto }
 .bold
 {
     font-weight: bold;
