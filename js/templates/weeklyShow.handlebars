@@ -1,78 +1,102 @@
-<div id="Content" class="large-1 columns">
-    <p class="credit">{{creditText}}</p>
-    <div class="segblock">
-        <img class="floatleft" height="271" src="{{ledeImageUrl}}" width="425" alt="lede" />
-        <!--next line has triple brackets to prevent escaping the html-->
+<section id="Content" class="small-12 columns">
+    <p class="credit">Posted Month Day, Year for week ending Month Day, Year</p>
+    <div class="row">
+
+        <div class="small-9 column">
+            <img src="{{ledeImageUrl}}" alt="lede"/>
+        </div>
+        <div class="small-3 column italic">
+            <p>
+                <a href="{{menuPath}}/{{menuYear}}/mp3/{{menuDate}}-btlv64.mp3" class="mp3link">
+                    Play entire program
+                    <div class="circle">
+                        <div class="arrow"></div>
+                    </div>
+                </a>
+            </p>
+        </div>
+    </div>
+    <div class="row hidden-for-small medium-12">
         {{{ledeHtml}}}
-        <hr />
-        <p>Listen to the entire program using these links, or to individual
-            interviews via the links appearing prior to each segment description
-            below.</p>
-        <p class="credit">
-            &nbsp;<a href="{{fullShowMp3}}">
-            <img height="14" src="/images/MP3.png" alt="MP3" width="24" /> &nbsp;64 kb/s</a>
-            <!-- the following url and image is always the same -->
-            &nbsp;<a href="/affiliates.html#BroadcastQualityMP3">
-            <img height="11" src="/images/HQ.jpg" alt="HQ" width="24" /> &nbsp;broadcast quality</a>
-            <!-- the following url and image is always the same -->
-            &nbsp;<a href="http://itunes.apple.com/podcast/between-the-lines-radio-newsmagazine/id387215195">
-            <img height="18" src="/images/podcast.png" alt="podcast" width="18" /> &nbsp;Podcast</a>
-        </p><hr/></div>
-    <!-- ================================================ -->
-
-    <div class="segblock">
+    </div>
+    <div class="row small-12 columns">
+        <hr/>
         <h3>{{segAHeadline}}</h3>
-
-        <p class="italic">
-            <a href="{{segAmp3Url}}">
-                <img height="16" src="/images/MP3.png" alt="MP3" width="24" /></a>
-            Interview with {{segAguestName}}, {{segAguestTitle}}, conducted by {{segAinterviewer}}
-        </p>
-        <img class="floatleft" height="199" src="{{segAimageSrc}}" width="300" alt="{{segAimageAltText}}" />
-        <div class="expandable">
-            {{{segAstoryText}}}
-        </div>
-
-
     </div>
-    <!-- ================================================ -->
 
-    <div class="segblock">
+    <div class=" row small-12 column">
+        <img src="{{segAimageSrc}}" alt="{{segAimageAltText}}" class="ImgBottomMargin"/>
+    </div>
+    <div class="row">
+        <div class="small-9 columns ">
+            <span class="italic"> Interview with {{segAguestName}}, {{segAguestTitle}}
+                , conducted by {{segAinterviewer}} </span>
+        </div>
+        <div class="small-2 columns">
+            <a href="{{segAmp3Url}}" class="mp3link">
+                <div class="circle">
+                    <div class="arrow"></div>
+                </div>
+            </a>
+        </div>
+        <div class="small-1"></div>
+    </div>
+    <div class="row small-12 columns">
+        <hr/>
         <h3>{{segBHeadline}}</h3>
-
-        <p class="italic">
-            <a href="{{segBmp3Url}}">
-                <img height="16" src="/images/MP3.png" alt="MP3" width="24" /></a>
-            Interview with {{segBguestName}}, {{segBguestTitle}}, conducted by {{segBinterviewer}}
-        </p>
-        <img class="floatright" height="169" src="{{segBimageSrc}}" width="300" alt="{{segBimageAltText}}" />
-        <div class="expandable">
-            {{{segBstoryText}}}
-        </div>
-
     </div>
-    <!-- ================================================ -->
 
-    <div class="segblock">
+    <div class=" row small-12 column">
+        <img src="{{segBimageSrc}}" alt="{{segBimageAltText}}" class="ImgBottomMargin"/>
+    </div>
+    <div class="row">
+        <div class="small-9 columns ">
+            <span class="italic">
+                Interview with {{segBguestName}}, {{segBguestTitle}}, conducted by {{segBinterviewer}}
+            </span>
+
+        </div>
+        <div class="small-2 columns">
+            <p></p>
+            <a href="{{segBmp3Url}}" class="mp3link">
+                <div class="circle">
+                    <div class="arrow"></div>
+                </div>
+            </a>
+        </div>
+        <div class="small-1"></div>
+    </div>
+    <div class="row small-12 columns">
+        <hr/>
         <h3>{{segCHeadline}}</h3>
-
-        <p class="italic">
-            <a href="{{segCmp3Url}}">
-                <img height="16" src="/images/MP3.png" alt="MP3" width="24" /></a>
-            Interview with {{segCguestName}}, {{segCguestTitle}}, conducted by {{segCinterviewer}}
-        </p>
-        <img class="floatleft" height="169" src="{{segCimageSrc}}" width="300" alt="{{segCimageAltText}}" />
-        <div class="expandable">
-            {{{segCstoryText}}}
-        </div>
     </div>
 
-</div>
+    <div class=" row small-12 column">
+        <img src="{{segCimageSrc}}" alt="{{segCimageAltText}}" class="ImgBottomMargin" />
+    </div>
+    <div class="row">
+        <div class="small-9 columns ">
+            <span class="italic">Interview with {{segCguestName}}, {{segCguestTitle}}, conducted by {{segCinterviewer}} </span>
+        </div>
+        <div class="small-2 columns">
+            <p></p>
+            <a href="{{segCmp3Url}}" class="mp3link">
+                <div class="circle">
+                    <div class="arrow"></div>
+                </div>
+            </a>
+        </div>
+        <div class="small-1"></div>
+    </div>
+    <hr/>
+
+</section>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('div.expandable').expander({
             slicePoint: 200,
             expandText: 'show more',
             userCollapseText: ' show less'
-        });});
+        });
+    });
 </script>

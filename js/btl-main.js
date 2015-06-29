@@ -31,7 +31,7 @@ btlJsApp = {
             showYear: ''
         };
         var dataValues = {
-            credit: '',
+            creditText: '',
             ledeImageUrl: '',
             ledeHtml: '',
             fullShowMp3: '',
@@ -40,7 +40,10 @@ btlJsApp = {
             segBHeadline: '', segBguestName: '', segBguestTitle: '', segBinterviewer: '',
             segBimageAltText: '', segBimageSrc: '', segBmp3Url: '', segBstoryText: '',
             segCHeadline: '', segCguestName: '', segCguestTitle: '', segCinterviewer: '',
-            segCimageAltText: '', segCimageSrc: '', segCmp3Url: '', segCstoryText: ''
+            segCimageAltText: '', segCimageSrc: '', segCmp3Url: '', segCstoryText: '',
+            menuPath: btlRoot,
+            menuDate: pageShowDate.showDate,
+            menuYear: pageShowDate.showYear
         };
         var menuValues = {
             menuPath: btlRoot,
@@ -67,8 +70,8 @@ btlJsApp = {
                 dataValues.fullShowMp3 = btlRoot + "/" + pageShowDate.showYear + "/mp3/" +
                 pageShowDate.showDate + "-btlv64.mp3";
 
-                menuValues.menuDate = pageShowDate.showDate;
-                menuValues.menuYear = pageShowDate.showYear;
+                dataValues.menuDate = pageShowDate.showDate;
+                dataValues.menuYear = pageShowDate.showYear;
 
                 /* compile the HandleBars templates */
                 var mainTemplate = Handlebars.compile(mainSource[0]);
@@ -76,8 +79,8 @@ btlJsApp = {
                 var weeklyTemplate = Handlebars.compile(weeklyShowSource[0]);
 
                 /* apply templates to index.html */
-                $('#main-content').html(mainTemplate(menuValues));
-                $('#menuTree').html(menuTemplate(menuValues));
+                $('#main-content').html(mainTemplate(dataValues));
+                $('#menuTree').html(menuTemplate(dataValues));
                 $('#btlShow').html(weeklyTemplate(dataValues));
                 $(document).foundation();
             }
