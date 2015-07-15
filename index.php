@@ -10,7 +10,7 @@ $detect = new Mobile_Detect;
 $showpath = "http://btlonline.org/20" . substr($showdate, 0, 2) . "/$showdate-btl.html";
 
 // redirect to appropriate page
-	//if ($detect->isMobile() && !$detect->isTablet())
+//	if ($detect->isMobile() && !$detect->isTablet())
 	if ($detect->isMobile())
 		require_once 'php/js-setup.php';
 	else
