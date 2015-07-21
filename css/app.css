@@ -49,7 +49,7 @@ h3 {
 }
 h3 a {
 	color: #CC0000;
-	text-decoration: underline;
+	text-decoration: none;
 
 }
 h3 a:hover {
